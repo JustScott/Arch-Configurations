@@ -2,6 +2,7 @@ set incsearch                   " Searches for matches live
 set ignorecase                    " Do case insensitive matching
 set tabstop=4                     " Default indentation of 4 spaces
 set shiftwidth=4                 "Default indentation again"
+autocmd FileType dart setlocal tabstop=2 shiftwidth=2 "Only use 2 spaces for tabs in dart files
 set whichwrap+=<,>,[,]      " Allows wrapping to next line with arrow keys
 set mouse=                      " Turn Mouse off
 syntax on                             " Gives files syntax highlighting
@@ -32,6 +33,7 @@ tnoremap <C-e> <C-\><C-n>
 
 " Folding python code
 set foldmethod=indent
+set foldmarker={,}
 nnoremap <space> za
 vnoremap <space> zf
 
