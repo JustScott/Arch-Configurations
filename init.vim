@@ -2,7 +2,7 @@ set incsearch                   " Searches for matches live
 set ignorecase                    " Do case insensitive matching
 set tabstop=4                     " Default indentation of 4 spaces
 set shiftwidth=4                 "Default indentation again"
-autocmd FileType dart setlocal tabstop=2 shiftwidth=2 "Only use 2 spaces for tabs in dart files
+autocmd FileType dart,yaml setlocal tabstop=2 shiftwidth=2 "Only use 2 spaces for tabs in dart files
 set whichwrap+=<,>,[,]      " Allows wrapping to next line with arrow keys
 set mouse=                      " Turn Mouse off
 syntax on                             " Gives files syntax highlighting
@@ -61,3 +61,20 @@ nnoremap <C-D> :q<CR>
 nnoremap <C-S> :belowright split\|term<CR>:set nonumber norelativenumber<CR>
 " Replace the current window with a terminal
 nnoremap <C-W> :term<CR>:set nonumber norelativenumber<CR>
+
+
+" Specify the directory where vim-plug should manage your plugins
+call plug#begin()
+
+" Dart/Flutter
+Plug 'dart-lang/dart-vim-plugin'
+Plug 'thosakwe/vim-flutter'
+Plug 'natebosch/vim-lsc'
+Plug 'natebosch/vim-lsc-dart'
+
+" End vim-plug configuration
+call plug#end()
+
+
+" Use system clipboard for copy and paste
+set clipboard=unnamedplus
