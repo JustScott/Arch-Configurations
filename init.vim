@@ -66,11 +66,19 @@ nnoremap <C-W> :term<CR>:set nonumber norelativenumber<CR>
 " Specify the directory where vim-plug should manage your plugins
 call plug#begin()
 
+" lf filemanager in vim
+"  use `\f` to open the window
+"  `e` to edit in the floating window
+"  `l` to edit in the main window
+Plug 'voldikss/vim-floaterm'
+Plug 'ptzz/lf.vim'
+
+
 " Dart/Flutter
-Plug 'dart-lang/dart-vim-plugin'
-Plug 'thosakwe/vim-flutter'
-Plug 'natebosch/vim-lsc'
-Plug 'natebosch/vim-lsc-dart'
+"Plug 'dart-lang/dart-vim-plugin'
+"Plug 'thosakwe/vim-flutter'
+"Plug 'natebosch/vim-lsc'
+"Plug 'natebosch/vim-lsc-dart'
 
 " End vim-plug configuration
 call plug#end()
