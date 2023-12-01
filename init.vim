@@ -38,8 +38,12 @@ nnoremap <space> za
 vnoremap <space> zf
 
 " Multiline Commenting
-vnoremap <C-c> :norm i#<CR>
-vnoremap <C-\> :norm ^x<CR>
+"  Most languages use //
+vnoremap <C-c> :norm i//<CR>
+vnoremap <C-\> :norm ^xx<CR>
+"  python uses #
+autocmd FileType python vnoremap <C-c> :norm i#<CR> 
+autocmd FileType python vnoremap <C-\> :norm ^x<CR>
 
 " Clear the current search highlight
 nnoremap <C-n> :noh<CR>
