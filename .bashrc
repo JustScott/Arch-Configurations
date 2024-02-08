@@ -1,6 +1,8 @@
-#!/bin/bash
 #
-# install.sh - part of the Arch-Configurations project
+# ~/.bashrc
+#
+#
+# .bashrc - part of the Arch-Configurations project
 # Copyright (C) 2023, Scott Wyman, development@scottwyman.me
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,17 +18,22 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#
-# Creates soft links to all of the configuration files in this repository
-#  throughout the system.
-#
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
 
-mkdir -p ~/.config/nvim
-ln -sf $PWD/init.vim ~/.config/nvim
-ln -sf $PWD/init.vim ~/.vimrc
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+PS1='[\u@\h \W]\$ '
+export EDITOR=nvim
 
-ln -sf $PWD/.xinitrc ~/.xinitrc
+# For docker
+export DOCKER_BUILDKIT=1 #
+export COMPOSE_DOCKER_CLI_BUILD=1
 
-# Install Vim-Plug for adding pluggins to vim and neovim
-sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+alias batt='cat /sys/class/power_supply/BAT0/capacity'
+alias admin='su administrator -P -c'
+alias space='df -h /'
+alias up='ping speedtest.net -c 4'
+alias swapc='su - administrator -P -c "sudo swapoff -a;sleep 2;sudo swapon -a"'
+
+alias dlynx='lynx https://lite.duckduckgo.com -accept_all_cookies -cookie_file=/dev/null'
