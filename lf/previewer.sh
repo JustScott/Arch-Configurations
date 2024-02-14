@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# install.sh - part of the Arch-Configurations project
+# previewer.sh - part of the Arch-Configurations project
 # Copyright (C) 2023, Scott Wyman, development@scottwyman.me
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,21 +16,6 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#
-# Creates soft links to all of the configuration files in this repository
-#  throughout the system.
-#
-
-mkdir -p ~/.config/nvim
-ln -sf $PWD/init.vim ~/.config/nvim
-ln -sf $PWD/init.vim ~/.vimrc
-
-ln -sf $PWD/.xinitrc ~/.xinitrc
-
-mkdir -p ~/.config/lf
-ln -sf $PWD/lf/{lfrc,previewer.sh} ~/.config/lf
-
-# Install Vim-Plug for adding pluggins to vim and neovim
-[ -f ~/.local/share/nvim/site/autoload/plug.vim ] || \
-    sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+case "$1" in
+    *) bat --paging=never --style=plain -f "$1" || true;;
+esac
