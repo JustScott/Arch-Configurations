@@ -47,6 +47,12 @@ spice-vdagent
 pulseaudio --start # Start the audio daemon
 pamixer -u # Un-mute the speaker
 
+# If in a virtual machine, automatically set the resolution
+if [[ $(xrandr) =~ "Virtual-1 connected " ]];
+then
+    xrandr --output Virtual-1 --mode 1920x1080
+fi
+
 # Set background
 SCREENSAVER=/home/$USER/Pictures/Wallpapers/Nature/sunset_winter_trees.jpg
 if [ -f $SCREENSAVER ];
