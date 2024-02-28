@@ -30,7 +30,21 @@ ln -sf $PWD/.xinitrc ~/.xinitrc
 mkdir -p ~/.config/lf
 ln -sf $PWD/lf/{lfrc,previewer.sh} ~/.config/lf
 
+mkdir -p ~/.config/bat
+ln -sf $PWD/bat/config ~/.config/bat/config
+
+#
+#  (note) You must run `:PlugInstall` from vim or neovim to install
+#          your tools
+#
 # Install Vim-Plug for adding pluggins to vim and neovim
 [ -f ~/.local/share/nvim/site/autoload/plug.vim ] || \
     sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+
+# Configure git
+git config --global user.name JustScott
+git config --global user.email development@justscott.me
+bat --help &>/dev/null \
+    && git config --global core.pager "bat --paging=always --style=changes" \
+    || echo "Need to install bat to set it as git's default pager"

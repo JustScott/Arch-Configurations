@@ -57,9 +57,12 @@ vnoremap <space> zf
 "  Most languages use //
 vnoremap <C-c> :norm i//<CR>
 vnoremap <C-\> :norm ^xx<CR>
-"  python uses #
-autocmd FileType python vnoremap <C-c> :norm i#<CR> 
-autocmd FileType python vnoremap <C-\> :norm ^x<CR>
+"  python & bash use `#` for comments
+autocmd FileType python,bash vnoremap <C-c> :norm i#<CR> 
+autocmd FileType python,bash vnoremap <C-\> :norm ^x<CR>
+
+" Make calcurse documents highlight markdown
+autocmd BufRead,BufNewFile /tmp/calcurse* set filetype=markdown
 
 " Clear the current search highlight
 nnoremap <C-n> :noh<CR>
@@ -78,10 +81,10 @@ nnoremap <C-Q> :tabclose<CR>
 nnoremap <C-D> :q<CR>
 
 " Open up a terminal window below the current window without line numbers
-nnoremap <C-S> :belowright split\|term<CR>:set nonumber norelativenumber<CR>
+"  laststatus=0 -> Remove the terminal status line
+nnoremap <C-S> :belowright split\|term<CR>:set nonumber norelativenumber<CR>:set laststatus=0<CR>:startinsert<CR>
 " Replace the current window with a terminal
-nnoremap <C-W> :term<CR>:set nonumber norelativenumber<CR>
-
+nnoremap <C-W> :term<CR>:set nonumber norelativenumber<CR>:set laststatus=0<CR>:startinsert<CR>
 
 " Specify the directory where vim-plug should manage your plugins
 call plug#begin()
@@ -90,15 +93,8 @@ call plug#begin()
 "  use `\f` to open the window
 "  `e` to edit in the floating window
 "  `l` to edit in the main window
-Plug 'voldikss/vim-floaterm'
 Plug 'ptzz/lf.vim'
-
-
-" Dart/Flutter
-"Plug 'dart-lang/dart-vim-plugin'
-"Plug 'thosakwe/vim-flutter'
-"Plug 'natebosch/vim-lsc'
-"Plug 'natebosch/vim-lsc-dart'
+Plug 'voldikss/vim-floaterm'
 
 " End vim-plug configuration
 call plug#end()
