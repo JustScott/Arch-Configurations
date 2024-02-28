@@ -21,30 +21,55 @@
 #  throughout the system.
 #
 
-mkdir -p ~/.config/nvim
-ln -sf $PWD/init.vim ~/.config/nvim
-ln -sf $PWD/init.vim ~/.vimrc
+ACTION="Create soft links"
+{
+    mkdir -p ~/.config/nvim
+    ln -sf $PWD/init.vim ~/.config/nvim
+    ln -sf $PWD/init.vim ~/.vimrc
 
-ln -sf $PWD/.xinitrc ~/.xinitrc
+    ln -sf $PWD/.xinitrc ~/.xinitrc
 
-mkdir -p ~/.config/lf
-ln -sf $PWD/lf/{lfrc,previewer.sh} ~/.config/lf
+    mkdir -p ~/.config/lf
+    ln -sf $PWD/lf/{lfrc,previewer.sh} ~/.config/lf
 
-mkdir -p ~/.config/bat
-ln -sf $PWD/bat/config ~/.config/bat/config
+    mkdir -p ~/.config/bat
+    ln -sf $PWD/bat/config ~/.config/bat/config
+} >/dev/null 2>>./archconfigurationerrors.log \
+    && echo "[SUCCESS] $ACTION" \
+    || echo "[FAIL] $ACTION... wrote error log to ./archconfigurationerrors.log"
 
 #
 #  (note) You must run `:PlugInstall` from vim or neovim to install
 #          your tools
 #
 # Install Vim-Plug for adding pluggins to vim and neovim
-[ -f ~/.local/share/nvim/site/autoload/plug.vim ] || \
-    sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+[ -f ~/.local/share/nvim/site/autoload/plug.vim ] || {
+    ACTION="Download & Install vim-plug"
+    {
+        sh -c "curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim \
+            --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+    } >/dev/null 2>>./archconfigurationerrors.log \
+        && echo "[SUCCESS] $ACTION" \
+        || echo "[FAIL] $ACTION... wrote error log to ./archconfigurationerrors.log"
+}
 
-# Configure git
-git config --global user.name JustScott
-git config --global user.email development@justscott.me
-bat --help &>/dev/null \
-    && git config --global core.pager "bat --paging=always --style=changes" \
-    || echo "Need to install bat to set it as git's default pager"
+ACTION="Download & Install vim plugins"
+nvim -c "PlugInstall | qall" --headless >/dev/null 2>>./archconfigurationerrors.log \
+    && echo "[SUCCESS] $ACTION" \
+    || echo "[FAIL] $ACTION... wrote error log to ./archconfigurationerrors.log"
+
+ACTION="Configure global git user defaults"
+{
+    git config --global user.name JustScott
+    git config --global user.email development@justscott.me
+} >/dev/null 2>>./archconfigurationerrors.log \
+    && echo "[SUCCESS] $ACTION" \
+    || echo "[FAIL] $ACTION... wrote error log to ./archconfigurationerrors.log"
+
+bat --help &>/dev/null && {
+    ACTION="Configure global git pager"
+    git config --global core.pager "bat --paging=always --style=changes" \
+        >/dev/null 2>>./archconfigurationerrors.log \
+            && echo "[SUCCESS] $ACTION" \
+            || echo "[FAIL] $ACTION... wrote error log to ./archconfigurationerrors.log"
+} || echo "Need to install bat to set it as git's default pager"
