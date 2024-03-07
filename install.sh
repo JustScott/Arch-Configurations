@@ -34,9 +34,13 @@ ACTION="Create soft links"
 
     mkdir -p ~/.config/bat
     ln -sf $PWD/bat/config ~/.config/bat/config
-} >/dev/null 2>>./archconfigurationerrors.log \
+
+    mkdir -p ~/.config/newsboat
+    ln -sf $PWD/newsboat/config ~/.config/newsboat/config
+    ln -sf $PWD/newsboat/urls ~/.config/newsboat/urls
+} >/dev/null 2>>/tmp/archconfigurationerrors.log \
     && echo "[SUCCESS] $ACTION" \
-    || echo "[FAIL] $ACTION... wrote error log to ./archconfigurationerrors.log"
+    || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
 
 #
 #  (note) You must run `:PlugInstall` from vim or neovim to install
@@ -48,28 +52,28 @@ ACTION="Create soft links"
     {
         sh -c "curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim \
             --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-    } >/dev/null 2>>./archconfigurationerrors.log \
+    } >/dev/null 2>>/tmp/archconfigurationerrors.log \
         && echo "[SUCCESS] $ACTION" \
-        || echo "[FAIL] $ACTION... wrote error log to ./archconfigurationerrors.log"
+        || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
 }
 
 ACTION="Download & Install vim plugins"
-nvim -c "PlugInstall | qall" --headless >/dev/null 2>>./archconfigurationerrors.log \
+nvim -c "PlugInstall | qall" --headless >/dev/null 2>>/tmp/archconfigurationerrors.log \
     && echo "[SUCCESS] $ACTION" \
-    || echo "[FAIL] $ACTION... wrote error log to ./archconfigurationerrors.log"
+    || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
 
 ACTION="Configure global git user defaults"
 {
     git config --global user.name JustScott
     git config --global user.email development@justscott.me
-} >/dev/null 2>>./archconfigurationerrors.log \
+} >/dev/null 2>>/tmp/archconfigurationerrors.log \
     && echo "[SUCCESS] $ACTION" \
-    || echo "[FAIL] $ACTION... wrote error log to ./archconfigurationerrors.log"
+    || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
 
 bat --help &>/dev/null && {
     ACTION="Configure global git pager"
     git config --global core.pager "bat --paging=always --style=changes" \
-        >/dev/null 2>>./archconfigurationerrors.log \
+        >/dev/null 2>>/tmp/archconfigurationerrors.log \
             && echo "[SUCCESS] $ACTION" \
-            || echo "[FAIL] $ACTION... wrote error log to ./archconfigurationerrors.log"
+            || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
 } || echo "Need to install bat to set it as git's default pager"
