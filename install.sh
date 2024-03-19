@@ -21,59 +21,88 @@
 #  throughout the system.
 #
 
-ACTION="Create soft links"
-{
-    mkdir -p ~/.config/nvim
-    ln -sf $PWD/init.vim ~/.config/nvim
-    ln -sf $PWD/init.vim ~/.vimrc
-
-    ln -sf $PWD/.xinitrc ~/.xinitrc
-
-    mkdir -p ~/.config/lf
-    ln -sf $PWD/lf/{lfrc,previewer.sh} ~/.config/lf
-
-    mkdir -p ~/.config/bat
-    ln -sf $PWD/bat/config ~/.config/bat/config
-
-    mkdir -p ~/.config/newsboat
-    ln -sf $PWD/newsboat/config ~/.config/newsboat/config
-    ln -sf $PWD/newsboat/urls ~/.config/newsboat/urls
-} >/dev/null 2>>/tmp/archconfigurationerrors.log \
-    && echo "[SUCCESS] $ACTION" \
-    || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
-
-#
-#  (note) You must run `:PlugInstall` from vim or neovim to install
-#          your tools
-#
-# Install Vim-Plug for adding pluggins to vim and neovim
-[ -f ~/.local/share/nvim/site/autoload/plug.vim ] || {
-    ACTION="Download & Install vim-plug"
+nvim --version &>/dev/null && {
+    ACTION="Create soft links for '$HOME/.vimrc' and '$HOME/.config/nvim'"
     {
-        sh -c "curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim \
-            --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+        mkdir -p $HOME/.config/nvim
+        ln -sf $PWD/init.vim $HOME/.config/nvim
+        ln -sf $PWD/init.vim $HOME/.vimrc
+    } >/dev/null 2>>/tmp/archconfigurationerrors.log \
+            && echo "[SUCCESS] $ACTION" \
+            || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
+
+    #
+    #  (note) You must run `:PlugInstall` from vim or neovim to install
+    #          your tools
+    #
+    # Install Vim-Plug for adding pluggins to vim and neovim
+    [ -f $HOME/.local/share/nvim/site/autoload/plug.vim ] || {
+        mkdir -p $HOME/.local/share/nvim/site/autoload
+        ACTION="Download & Install vim-plug"
+        echo -n "...$ACTION..."
+        {
+            curl -Lo $HOME/.local/share/nvim/site/autoload/plug.vim \
+                https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+            nvim -c "PlugInstall | qall" --headless
+        } >/dev/null 2>>/tmp/archconfigurationerrors.log \
+            && echo "[SUCCESS]" \
+            || { "[FAIL] wrote error log to ~/miniarcherrors.log"; exit; }
+    }
+}
+
+
+git --version &>/dev/null && {
+    ACTION="Configure global git user defaults"
+    {
+        git config --global user.name JustScott
+        git config --global user.email development@justscott.me
     } >/dev/null 2>>/tmp/archconfigurationerrors.log \
         && echo "[SUCCESS] $ACTION" \
         || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
 }
 
-ACTION="Download & Install vim plugins"
-nvim -c "PlugInstall | qall" --headless >/dev/null 2>>/tmp/archconfigurationerrors.log \
-    && echo "[SUCCESS] $ACTION" \
-    || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
+# We can presume X to be running if wayland isnt, and the $DISPLAY variable has value
+[[ -z $WAYLAND_DISPLAY && $DISPLAY ]] && {
+    ACTION="Create soft link to $HOME/.xinitrc"
+    ln -sf $PWD/.xinitrc $HOME/.xinitrc >/dev/null 2>>/tmp/archconfigurationerrors.log \
+        && echo "[SUCCESS] $ACTION" \
+        || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
+} 
 
-ACTION="Configure global git user defaults"
-{
-    git config --global user.name JustScott
-    git config --global user.email development@justscott.me
+ACTION="Create soft link to '$HOME/.config/lf/{lfrc,previewer.sh}'"
+lf --version &>/dev/null && {
+    mkdir -p $HOME/.config/lf
+    ln -sf $PWD/lf/{lfrc,previewer.sh} $HOME/.config/lf/
 } >/dev/null 2>>/tmp/archconfigurationerrors.log \
     && echo "[SUCCESS] $ACTION" \
     || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
 
-bat --help &>/dev/null && {
-    ACTION="Configure global git pager"
-    git config --global core.pager "bat --paging=always --style=changes" \
-        >/dev/null 2>>/tmp/archconfigurationerrors.log \
-            && echo "[SUCCESS] $ACTION" \
-            || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
-} || echo "Need to install bat to set it as git's default pager"
+
+bat --version &>/dev/null && {
+    ACTION="Create soft link to '$HOME/.config/bat/config'"
+    {
+        mkdir -p $HOME/.config/bat
+        ln -sf $PWD/bat/config $HOME/.config/bat/config
+    } >/dev/null 2>>/tmp/archconfigurationerrors.log \
+        && echo "[SUCCESS] $ACTION" \
+        || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
+
+
+    git --version &>/dev/null && {
+        ACTION="Configure global git pager as bat"
+        git config --global core.pager "bat --paging=always --style=changes" \
+            >/dev/null 2>>/tmp/archconfigurationerrors.log \
+                && echo "[SUCCESS] $ACTION" \
+                || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
+    }
+} 
+
+newsboat --version &>/dev/null && {
+    ACTION="Create soft link to '$HOME/.config/newsboat/{config,urls}'"
+    {
+        mkdir -p $HOME/.config/newsboat
+        ln -sf $PWD/newsboat/{config,urls} $HOME/.config/newsboat/
+    } >/dev/null 2>>/tmp/archconfigurationerrors.log \
+        && echo "[SUCCESS] $ACTION" \
+        || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
+}
