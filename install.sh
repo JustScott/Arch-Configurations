@@ -21,6 +21,18 @@
 #  throughout the system.
 #
 
+[[ -f $HOME/.bashrc ]] && {
+    ACTION="Source bashrc_extension in $HOME/.bashrc"
+    {
+        extension_path="$PWD/bashrc_extension"
+        cat $HOME/.bashrc | grep "source $extension_path" &>/dev/null || {
+            echo "source $extension_path" >> $HOME/.bashrc
+        }
+    } >/dev/null 2>>/tmp/archconfigurationerrors.log \
+        && echo "[SUCCESS] $ACTION" \
+        || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
+}
+
 nvim --version &>/dev/null && {
     ACTION="Create soft links for '$HOME/.vimrc' and '$HOME/.config/nvim'"
     {

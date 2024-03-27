@@ -113,3 +113,10 @@ cmd zip ${{
     rm -rf $1
 }}
 
+cmd fzf_jump ${{
+    fzf_path=$(find . -type d -o -type f | fzf --reverse)
+
+    [[ -d $fzf_path ]] && lf $fzf_path
+    [[ -f $fzf_path ]] && nvim $fzf_path -c "cd $(dirname $fzf_path)"
+}}
+map <c-f> :fzf_jump

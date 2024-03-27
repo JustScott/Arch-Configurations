@@ -54,7 +54,7 @@ then
 fi
 
 # Set background
-SCREENSAVER=/home/$USER/Pictures/Wallpapers/Nature/sunset_winter_trees.jpg
+SCREENSAVER=/home/$USER/Pictures/Wallpapers/Nature/dark_red_moon.jpeg
 if [ -f $SCREENSAVER ];
 then
     feh --bg-scale $SCREENSAVER 

@@ -86,6 +86,9 @@ nnoremap <C-S> :belowright split\|term<CR>:set nonumber norelativenumber<CR>:set
 " Replace the current window with a terminal
 nnoremap <C-W> :term<CR>:set nonumber norelativenumber<CR>:set laststatus=0<CR>:startinsert<CR>
 
+" Open the fzf tool
+nnoremap <C-f> :FZF<CR>
+
 " Specify the directory where vim-plug should manage your plugins
 call plug#begin()
 
@@ -95,10 +98,10 @@ call plug#begin()
 "  `l` to edit in the main window
 Plug 'ptzz/lf.vim'
 Plug 'voldikss/vim-floaterm'
+Plug 'ibhagwan/fzf-lua', {'branch': 'main'}
 
 " End vim-plug configuration
 call plug#end()
-
 
 " Use system clipboard for copy and paste
 set clipboard=unnamedplus
