@@ -1,5 +1,5 @@
 auto-reload yes
-browser mpv_lynx
+browser min_browser
 reload-threads 10
 
 color listnormal        cyan default

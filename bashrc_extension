@@ -28,6 +28,26 @@ alias up='ping quad9.net -c 4'
 alias newsboat='newsboat -c ~/.config/newsboat/cache.db'
 alias dlynx='lynx https://lite.duckduckgo.com -accept_all_cookies -cookie_file=/dev/null'
 
+htmd() {
+    { which html2text || type html2text; } &>/dev/null \
+        && bat --language=md <(html2text <(curl -L --silent "$1")) \
+        || exit 1
+}
+
+presnap() {
+    description="$1"
+    sudo snapper -c root create -d "$description" -t pre
+    sudo snapper -c home create -d "$description" -t pre
+}
+
+postsnap() {
+    description="$1"
+    root_pre_number=$(sudo snapper -c root list | awk '{print $1}' | tail -n 1)
+    sudo snapper -c root create -d "$description" -t post --pre-number $root_pre_number
+    home_pre_number=$(sudo snapper -c home list | awk '{print $1}' | tail -n 1)
+    sudo snapper -c home create -d "$description" -t post --pre-number $home_pre_number
+}
+
 batt() {
     for capacity_path in $(ls /sys/class/power_supply/*/capacity);
     do
