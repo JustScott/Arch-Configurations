@@ -69,7 +69,12 @@ space() {
     filesystem_type=$(stat -f -c "%T" /)
 
     [[ "$filesystem_type" == "btrfs" ]] && {
-        btrfs filesystem df /
+        size=$(btrfs filesystem usage / 2>/dev/null | grep "Device size:" | awk '{print $3}')
+        used=$(btrfs filesystem usage / 2>/dev/null | grep "Device allocated:" | awk '{print $3}')
+        available=$(btrfs filesystem usage / 2>/dev/null | grep "Device unallocated:" | awk '{print $3}')
+
+        printf "  %-12s %-12s %-12s\n" "Size" "Used" "Avail"
+        printf "%-12s %-12s %-12s\n" "$size" "$used" "$available"
     } || {
         [[ "$filesystem_type" == "ext4" || "$filesystem_type" == "ext2/ext3" ]] \
             && df -h / \
