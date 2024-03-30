@@ -54,12 +54,14 @@ nnoremap <space> za
 vnoremap <space> zf
 
 " Multiline Commenting
+"  Detect /bin/bash at the start of bash files, and set the file type to sh
+autocmd BufRead,BufNewFile * if getline(1) =~# '^#!.*\bash' | setfiletype sh | endif
 "  Most languages use //
 vnoremap <C-c> :norm i//<CR>
 vnoremap <C-\> :norm ^xx<CR>
 "  python & bash use `#` for comments
-autocmd FileType python,bash vnoremap <C-c> :norm i#<CR> 
-autocmd FileType python,bash vnoremap <C-\> :norm ^x<CR>
+autocmd FileType python,sh vnoremap <C-c> :norm i#<CR> 
+autocmd FileType python,sh vnoremap <C-\> :norm ^x<CR>
 
 " Make calcurse documents highlight markdown
 autocmd BufRead,BufNewFile /tmp/calcurse* set filetype=markdown
