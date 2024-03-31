@@ -30,6 +30,13 @@ alias dlynx='lynx https://lite.duckduckgo.com -accept_all_cookies -cookie_file=/
 
 # Saves any running VirtualMachines before shutting down
 shutdown_wrapper() {
+    { which calcurse || type calcurse; } &>/dev/null && {
+        [[ -f $HOME/.local/share/calcurse/.calcurse.pid ]] && {
+            echo "You need to quit calcurse first... canceling shutdown..."
+            return 1
+        }
+    }
+
     { which vm || type vm; } &>/dev/null && {
         vm list | grep "running" | while IFS= read -r line
         do
@@ -54,6 +61,24 @@ htmd() {
     { which html2text || type html2text; } &>/dev/null \
         && bat --language=md <(html2text <(curl -L --silent "$1")) \
         || exit 1
+}
+
+spell() {
+    word="$1"
+
+    html=$(curl -L --silent "https://duckduckgo.com/?q=spell+$word&ia=answer")
+
+    echo $html | grep "appears to be spelled correctly" &>/dev/null && {
+        echo "Spelled Correctly"; return 0; 
+    } || { 
+        echo -n "Spelled wrong, " 
+
+        alternatives=$(echo $html | sed -n 's/.*Suggestions:<\/i>\(.*\)<\/a>.*/\1/p' | sed 's/<[^>]*>//g')
+
+        echo "possible alternative spellings: $alternatives"
+
+        return 1
+    }
 }
 
 presnap() {
