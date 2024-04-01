@@ -55,7 +55,7 @@ shutdown_wrapper() {
     shutdown $@ 
 }
 
-alias shutdown="shutdown_wrapper"
+alias shutdown=shutdown_wrapper
 
 htmd() {
     { which html2text || type html2text; } &>/dev/null \
@@ -64,21 +64,44 @@ htmd() {
 }
 
 spell() {
-    word="$1"
+    words=$@
 
-    html=$(curl -L --silent "https://duckduckgo.com/?q=spell+$word&ia=answer")
+    for word in ${words[@]}
+    do
+        word=$(echo $word | tr '[:upper:]' '[:lower:]')
+        html=$(curl -L --silent "https://duckduckgo.com/?q=spell+$word&ia=answer")
 
-    echo $html | grep "appears to be spelled correctly" &>/dev/null && {
-        echo "Spelled Correctly"; return 0; 
-    } || { 
-        echo -n "Spelled wrong, " 
+        echo $html | grep "appears to be spelled correctly" &>/dev/null && {
+            echo "Spelled Correctly"; return 0; 
+        } || { 
+            alternatives=$(echo $html | sed -n 's/.*Suggestions:<\/i>\(.*\)<\/a>.*/\1/p' | sed 's/<[^>]*>//g')
 
-        alternatives=$(echo $html | sed -n 's/.*Suggestions:<\/i>\(.*\)<\/a>.*/\1/p' | sed 's/<[^>]*>//g')
+            echo "Spelled wrong, possible alternative spellings: $alternatives" >&2
 
-        echo "possible alternative spellings: $alternatives"
+            return 1
+        }
+    done
+}
 
+define() {
+    words=$@
+
+    for word in ${words[@]}
+    do
+        word=$(echo $word | tr '[:upper:]' '[:lower:]')
+        spell "$word" >/dev/null && {
+            uppercase_word=$(echo $word | tr '[:lower:]' '[:upper:]' )
+            URL="https://www.merriam-webster.com/dictionary/$word"
+
+            curl -L --silent "$URL" \
+                | grep --ignore-case "the meaning of $word is" | grep -o 'content=".*"' \
+                | sed "s/content=//; s/The meaning of $uppercase_word is //; s/. How to use $word in a sentence.//" \
+                | sed 's/"$//; s/"//' | sed 's/ Did you know?//'
+
+            return 0
+        }
         return 1
-    }
+    done
 }
 
 presnap() {
