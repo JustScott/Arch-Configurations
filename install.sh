@@ -26,7 +26,7 @@
     {
         extension_path="$PWD/bashrc_extension"
         cat $HOME/.bashrc | grep "source $extension_path" &>/dev/null || {
-            echo "source $extension_path" >> $HOME/.bashrc
+            echo -e "\nsource $extension_path" >> $HOME/.bashrc
         }
     } >/dev/null 2>>/tmp/archconfigurationerrors.log \
         && echo "[SUCCESS] $ACTION" \
