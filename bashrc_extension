@@ -19,6 +19,16 @@
 # Meant to be sourced by the $HOME/.bashrc file. This allows you to keep
 #  private information in your .bashrc, and non-private information in here.
 
+# if in a tty
+[[ -z "$DISPLAY" ]] && {
+    # enable color
+    export TERM=xterm-256color
+    # set the size
+    stty -a | grep "rows 24; columns 80;" &>/dev/null && {
+        stty rows 47 cols 173 &>/dev/null
+    }
+}
+
 
 export PAGER="bat --paging=always --style=plain"
 export EDITOR=nvim
