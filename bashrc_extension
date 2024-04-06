@@ -85,9 +85,18 @@ reboot_wrapper() {
 
 alias reboot=reboot_wrapper
 
-
 hist() {
-    eval "$(history | awk '{$1="";print $0}' | awk '{$1=$1;print}' | sort | uniq | fzf)"
+    declare -A hist_hashmap
+
+    eval "$(tac $HOME/.bash_history | while IFS= read -r line
+    do
+        [[ -n "$line" ]] && {
+            [[ -v hist_hashmap["$line"] ]] || {
+                echo $line
+                hist_hashmap["$line"]=""
+            }
+        }
+    done | fzf --reverse)"
 }
 
 htmd() {
