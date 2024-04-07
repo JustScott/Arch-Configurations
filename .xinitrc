@@ -19,10 +19,6 @@
 # Activate screen saver daemon
 xscreensaver --no-splash &
 
-# Stops xscreensaver from locking the screen while
-#  audio's playing
-prevent-screen-sleep &
-
 # A compositor to reduce screen tearing
 picom &
 
@@ -35,11 +31,8 @@ do
     enable-main-display
 done &
 
-#######
-# In VM
-##
-spice-vdagent
-########
+# Share clipboard between host and VMs
+spice-vdagent &
 
 # Only launch dbus if it's not already running
 [[ -z "$DBUS_SESSION_BUS_ADDRESS" ]] && dbus-launch
@@ -48,16 +41,10 @@ pulseaudio --start # Start the audio daemon
 pamixer -u # Un-mute the speaker
 
 # If in a virtual machine, automatically set the resolution
-if [[ $(xrandr) =~ "Virtual-1 connected " ]];
-then
-    xrandr --output Virtual-1 --mode 1920x1080
-fi
+xrandr | grep "Virtual-1 connected " && xrandr --output Virtual-1 --mode 1920x1080
 
-# Set background
-SCREENSAVER=/home/$USER/Pictures/Wallpapers/Nature/dark_red_moon.jpeg
-if [ -f $SCREENSAVER ];
-then
-    feh --bg-scale $SCREENSAVER 
-fi
+# Set wallpaper
+WALLPAPER=/home/$USER/.wallpaper
+[[ -f $WALLPAPER ]] && feh --bg-scale $WALLPAPER
 
 exec dwm
