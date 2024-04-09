@@ -89,6 +89,15 @@ lf --version &>/dev/null && {
     && echo "[SUCCESS] $ACTION" \
     || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
 
+ACTION="Create soft link to '$HOME/.config/picom/picom.conf'"
+picom --version &>/dev/null && {
+    mkdir -p $HOME/.config/picom
+    ln -sf $PWD/picom/picom.conf $HOME/.config/picom
+} >/dev/null 2>>/tmp/archconfigurationerrors.log \
+    && echo "[SUCCESS] $ACTION" \
+    || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
+
+
 
 bat --version &>/dev/null && {
     ACTION="Create soft link to '$HOME/.config/bat/config'"

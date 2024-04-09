@@ -72,8 +72,8 @@ nnoremap <C-O> :set nonumber norelativenumber<CR>
 
 " Manage tabs
 nnoremap <C-T> :tabnew<CR>
-nnoremap <C-N> :tabnext<CR>
-nnoremap <C-P> :tabprevious<CR>
+nnoremap <C-]> :tabnext<CR>
+nnoremap <C-[> :tabprevious<CR>
 nnoremap <C-Q> :tabclose<CR>
 
 " Close the current window
