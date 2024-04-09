@@ -26,7 +26,7 @@ picom &
 while true;    
 do    
     update-status-bar 
-    sleep 30
+    sleep 15
     # Enables laptop monitor if no external monitors are connected
     enable-main-display
 done &

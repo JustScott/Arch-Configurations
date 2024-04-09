@@ -44,9 +44,6 @@ noremap <silent> <C-Right> :vertical resize -3<CR>
 noremap <silent> <C-Up> :resize +3<CR>
 noremap <silent> <C-Down> :resize -3<CR>
 
-" Exit terminal mode with CTRL+e
-tnoremap <C-e> <C-\><C-n>
-
 " Folding python code
 set foldmethod=indent
 set foldmarker={,}
@@ -75,18 +72,23 @@ nnoremap <C-O> :set nonumber norelativenumber<CR>
 
 " Manage tabs
 nnoremap <C-T> :tabnew<CR>
-nnoremap <C-]> :tabnext<CR>
-nnoremap <C-[> :tabprevious<CR>
+nnoremap <C-N> :tabnext<CR>
+nnoremap <C-P> :tabprevious<CR>
 nnoremap <C-Q> :tabclose<CR>
 
 " Close the current window
 nnoremap <C-D> :q<CR>
+
+" Use system clipboard for copy and paste
+set clipboard=unnamedplus
 
 " Open up a terminal window below the current window without line numbers
 "  laststatus=0 -> Remove the terminal status line
 nnoremap <C-S> :belowright split\|term<CR>:set nonumber norelativenumber<CR>:set laststatus=0<CR>:startinsert<CR>
 " Replace the current window with a terminal
 nnoremap <C-W> :term<CR>:set nonumber norelativenumber<CR>:set laststatus=0<CR>:startinsert<CR>
+" Exit terminal mode with CTRL+e
+tnoremap <C-e> <C-\><C-n>
 
 " Open the fzf tool
 nnoremap <C-f> :FZF<CR>
@@ -104,6 +106,3 @@ Plug 'ibhagwan/fzf-lua', {'branch': 'main'}
 
 " End vim-plug configuration
 call plug#end()
-
-" Use system clipboard for copy and paste
-set clipboard=unnamedplus
