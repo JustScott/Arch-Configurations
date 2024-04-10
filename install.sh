@@ -33,7 +33,7 @@
         || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
 }
 
-nvim --version &>/dev/null && {
+{ which nvim || type nvim; } &>/dev/null && {
     ACTION="Create soft links for '$HOME/.vimrc' and '$HOME/.config/nvim'"
     {
         mkdir -p $HOME/.config/nvim
@@ -62,8 +62,7 @@ nvim --version &>/dev/null && {
     }
 }
 
-
-git --version &>/dev/null && {
+{ which git || type git; } &>/dev/null && {
     ACTION="Configure global git user defaults"
     {
         git config --global user.name JustScott
@@ -81,25 +80,37 @@ git --version &>/dev/null && {
         || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
 } 
 
-ACTION="Create soft link to '$HOME/.config/lf/{lfrc,previewer.sh}'"
-lf --version &>/dev/null && {
-    mkdir -p $HOME/.config/lf
-    ln -sf $PWD/lf/{lfrc,previewer.sh} $HOME/.config/lf/
-} >/dev/null 2>>/tmp/archconfigurationerrors.log \
-    && echo "[SUCCESS] $ACTION" \
-    || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
+{ which lf || type lf; } &>/dev/null && {
+    ACTION="Create soft link to '$HOME/.config/lf/{lfrc,previewer.sh}'"
+    {
+        mkdir -p $HOME/.config/lf
+        ln -sf $PWD/lf/{lfrc,previewer.sh} $HOME/.config/lf/
+    } >/dev/null 2>>/tmp/archconfigurationerrors.log \
+        && echo "[SUCCESS] $ACTION" \
+        || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
+}
 
-ACTION="Create soft link to '$HOME/.config/picom/picom.conf'"
-picom --version &>/dev/null && {
-    mkdir -p $HOME/.config/picom
-    ln -sf $PWD/picom/picom.conf $HOME/.config/picom
-} >/dev/null 2>>/tmp/archconfigurationerrors.log \
-    && echo "[SUCCESS] $ACTION" \
-    || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
+{ which lynx || type lynx; } &>/dev/null && {
+    ACTION="Create soft link to '$HOME/.config/lynx/lynx.cfg'"
+    {
+        mkdir -p $HOME/.config/lynx
+        ln -sf $PWD/lynx/lynx.cfg $HOME/.config/lynx/
+    } >/dev/null 2>>/tmp/archconfigurationerrors.log \
+        && echo "[SUCCESS] $ACTION" \
+        || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
+}
 
+{ which picom || type picom; } &>/dev/null && {
+    ACTION="Create soft link to '$HOME/.config/picom/picom.conf'"
+    {
+        mkdir -p $HOME/.config/picom
+        ln -sf $PWD/picom/picom.conf $HOME/.config/picom
+    } >/dev/null 2>>/tmp/archconfigurationerrors.log \
+        && echo "[SUCCESS] $ACTION" \
+        || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
+}
 
-
-bat --version &>/dev/null && {
+{ which bat || type bat; } &>/dev/null && {
     ACTION="Create soft link to '$HOME/.config/bat/config'"
     {
         mkdir -p $HOME/.config/bat
@@ -109,7 +120,7 @@ bat --version &>/dev/null && {
         || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
 
 
-    git --version &>/dev/null && {
+    { which git || type git; } &>/dev/null && {
         ACTION="Configure global git pager as bat"
         git config --global core.pager "bat --paging=always --style=changes" \
             >/dev/null 2>>/tmp/archconfigurationerrors.log \
@@ -118,7 +129,7 @@ bat --version &>/dev/null && {
     }
 } 
 
-newsboat --version &>/dev/null && {
+{ which newsboat || type newsboat; } &>/dev/null && {
     ACTION="Create soft link to '$HOME/.config/newsboat/{config,urls}'"
     {
         mkdir -p $HOME/.config/newsboat

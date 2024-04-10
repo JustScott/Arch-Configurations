@@ -39,7 +39,7 @@ export HISTSIZE=10000
 
 alias up='ping quad9.net -c 4'
 alias newsboat='newsboat -c ~/.config/newsboat/cache.db'
-alias dlynx='lynx https://lite.duckduckgo.com -accept_all_cookies -cookie_file=/dev/null'
+alias dlynx="lynx -cfg=$HOME/.config/lynx/lynx.cfg"
 
 # Saves any running VirtualMachines before shutting down
 safe_shutdown() {
