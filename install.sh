@@ -100,6 +100,16 @@
         || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
 }
 
+{ which calcurse || type calcurse; } &>/dev/null && {
+    ACTION="Create soft link to '$HOME/.config/calcurse/conf'"
+    {
+        mkdir -p $HOME/.config/calcurse
+        ln -sf $PWD/calcurse/conf $HOME/.config/calcurse/
+    } >/dev/null 2>>/tmp/archconfigurationerrors.log \
+        && echo "[SUCCESS] $ACTION" \
+        || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
+}
+
 { which picom || type picom; } &>/dev/null && {
     ACTION="Create soft link to '$HOME/.config/picom/picom.conf'"
     {
