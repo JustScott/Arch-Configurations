@@ -22,10 +22,20 @@ xscreensaver --no-splash &
 # A compositor to reduce screen tearing
 picom &
 
-# Display battery percentage and date & time
+# Initialize status-bar values 
+update-status-bar --volume --brightness --battery --network 
+
+# Update just the date every second
 while true;    
 do    
-    update-status-bar 
+    update-status-bar
+    sleep 1
+done &
+
+# Update all the values every 15 seconds
+while true;    
+do    
+    update-status-bar --volume --brightness --battery --network 
     sleep 15
     # Enables laptop monitor if no external monitors are connected
     enable-main-display

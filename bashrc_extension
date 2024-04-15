@@ -177,7 +177,13 @@ wpf() {
 
     wallpaper_directory=$HOME/Pictures/Wallpapers
 
-    wp $(find $wallpaper_directory -type f | fzf --reverse)
+    if [[ -d $wallpaper_directory ]]
+    then
+        wp $(find $wallpaper_directory -type f | fzf --reverse)
+    else
+        echo -e "\n - [ERROR] $wallpaper_directory doesn't exist! - \n"
+        return 1
+    fi
 }
 
 presnap() {
