@@ -36,6 +36,8 @@ export CALCURSE_PAGER="bat --paging=always --style=plain --language=markdown"
 
 export HISTFILESIZE=10000
 export HISTSIZE=10000
+alias ehist='history -a;eval "$(hist_fzf)"'
+alias hist="history -a;hist_fzf"
 
 alias up='ping quad9.net -c 4'
 alias newsboat='newsboat -c ~/.config/newsboat/cache.db'
@@ -95,10 +97,11 @@ reboot_wrapper() {
 
 alias reboot=reboot_wrapper
 
-hist() {
+hist_fzf() {
+    # Removes duplicates using the hashmap
     declare -A hist_hashmap
 
-    eval "$(tac $HOME/.bash_history | while IFS= read -r line
+    echo "$(tac $HOME/.bash_history | while IFS= read -r line
     do
         [[ -n "$line" ]] && {
             [[ -v hist_hashmap["$line"] ]] || {
@@ -183,6 +186,15 @@ wpf() {
     else
         echo -e "\n - [ERROR] $wallpaper_directory doesn't exist! - \n"
         return 1
+    fi
+}
+
+play() {
+    if { which ytfzf || type ytfzf; } &>/dev/null
+    then
+        ytfzf -Am $@
+    else
+        echo -e "\n - [ERROR] ytfzf not installed - \n"
     fi
 }
 
