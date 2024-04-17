@@ -23,7 +23,7 @@ xscreensaver --no-splash &
 picom &
 
 # Initialize status-bar values 
-update-status-bar --volume --brightness --battery --network 
+update-status-bar --all 
 
 # Update just the date every second
 while true;    
@@ -32,7 +32,14 @@ do
     sleep 1
 done &
 
-# Update all the values every 15 seconds
+# Update the weather every 5 minutes
+while true;    
+do    
+    update-status-bar --weather
+    sleep 600
+done &
+
+# Update most of the values every 15 seconds
 while true;    
 do    
     update-status-bar --volume --brightness --battery --network 
@@ -49,6 +56,15 @@ spice-vdagent &
 
 pulseaudio --start # Start the audio daemon
 pamixer -u # Un-mute the speaker
+
+# Mute speaker if screen locks. Unmute if unlocked and still muted
+while true; 
+do
+    sleep 15
+    
+    xscreensaver-command -time | grep -i "locked" &>/dev/null \
+        && pacmd suspend 1
+done &
 
 # If in a virtual machine, automatically set the resolution
 xrandr | grep "Virtual-1 connected " && xrandr --output Virtual-1 --mode 1920x1080

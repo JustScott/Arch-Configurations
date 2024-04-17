@@ -160,3 +160,25 @@ then
         && echo "[SUCCESS] $ACTION" \
         || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
 fi
+
+if { which mpv || type mpv; } &>/dev/null
+then
+    ACTION="Create soft link to '$HOME/.config/mpv/mpv.conf'"
+    {
+        mkdir -p $HOME/.config/mpv
+        ln -sf $PWD/mpv/mpv.conf $HOME/.config/mpv/
+    } >/dev/null 2>>/tmp/archconfigurationerrors.log \
+        && echo "[SUCCESS] $ACTION" \
+        || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
+fi
+
+if { which ytfzf || type ytfzf; } &>/dev/null
+then
+    ACTION="Create soft link to '$HOME/.config/ytfzf/conf.sh'"
+    {
+        mkdir -p $HOME/.config/ytfzf
+        ln -sf $PWD/ytfzf/conf.sh $HOME/.config/ytfzf/
+    } >/dev/null 2>>/tmp/archconfigurationerrors.log \
+        && echo "[SUCCESS] $ACTION" \
+        || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
+fi

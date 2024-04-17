@@ -112,6 +112,16 @@ hist_fzf() {
     done | fzf --reverse)"
 }
 
+wttr() {
+    if [[ -n "$LOCATION" ]]
+    then
+        curl -s wttr.in/$LOCATION?u
+    else
+        echo "Must set the \$LOCATION variable first!"
+        return 1
+    fi
+}
+
 htmd() {
     { which html2text || type html2text; } &>/dev/null \
         && bat --language=md <(html2text <(curl -L --silent "$1")) \
