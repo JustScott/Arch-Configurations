@@ -36,7 +36,7 @@ done &
 while true;    
 do    
     update-status-bar --weather
-    sleep 600
+    sleep 1200
 done &
 
 # Update most of the values every 15 seconds
