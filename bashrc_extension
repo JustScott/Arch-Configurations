@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# general_bashrc_extension - part of the Arch-Setup project
-# Copyright (C) 2023, Scott Wyman, development@scottwyman.me
+# bashrc_extension - part of the Arch-Setup project
+# Copyright (C) 2024, JustScott, development@justscott.me
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -25,7 +25,7 @@
     export TERM=xterm-256color
     # set the size
     stty -a | grep "rows 24; columns 80;" &>/dev/null && {
-        stty rows 47 cols 173 &>/dev/null
+        stty rows 46 cols 171 &>/dev/null
     }
 }
 
@@ -192,7 +192,18 @@ wpf() {
 
     if [[ -d $wallpaper_directory ]]
     then
-        wp $(find $wallpaper_directory -type f | fzf --reverse)
+        preview="file {}"
+        if { which img2txt || type img2txt; } &>/dev/null
+        then
+            preview="img2txt -H $(tput lines) {}"
+        fi
+
+        wp $( \
+            find $wallpaper_directory -type f \
+            | fzf --reverse\
+                --preview="$preview" \
+                --preview-window=down,80% \
+        )
     else
         echo -e "\n - [ERROR] $wallpaper_directory doesn't exist! - \n"
         return 1
@@ -200,9 +211,30 @@ wpf() {
 }
 
 play() {
+    search="$@"
+    if [[ ${#@} == 0 && -f $HOME/.play_history ]]
+    then
+        if { which fzf || type fzf; } &>/dev/null
+        then
+            search="$(cat $HOME/.play_history | fzf --reverse)"
+        else
+            echo "[ERROR] You need to pass a search term after play"
+            return 1
+        fi
+    fi
+
     if { which ytfzf || type ytfzf; } &>/dev/null
     then
-        ytfzf -Am $@
+        if [[ -n "$search" ]]
+        then
+            # Avoid repeats
+            if ! grep "$search" $HOME/.play_history &>/dev/null 
+            then
+                echo "$search" >> $HOME/.play_history
+            fi
+
+            ytfzf -Am "$search"
+        fi
     else
         echo -e "\n - [ERROR] ytfzf not installed - \n"
     fi
