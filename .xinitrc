@@ -23,27 +23,27 @@ xscreensaver --no-splash &
 picom &
 
 # Initialize status-bar values 
-update-status-bar --all 
+update-status-bar --all &
 
 # Update just the date every second
 while true;    
 do    
-    update-status-bar
     sleep 1
+    update-status-bar
 done &
 
 # Update the weather every 5 minutes
 while true;    
 do    
-    update-status-bar --weather
     sleep 1200
+    update-status-bar --weather
 done &
 
 # Update most of the values every 15 seconds
 while true;    
 do    
-    update-status-bar --volume --brightness --battery --network 
     sleep 15
+    update-status-bar --volume --brightness --battery --network 
     # Enables laptop monitor if no external monitors are connected
     enable-main-display
 done &
@@ -61,7 +61,6 @@ pamixer -u # Un-mute the speaker
 while true; 
 do
     sleep 15
-    
     xscreensaver-command -time | grep -i "locked" &>/dev/null \
         && pacmd suspend 1
 done &

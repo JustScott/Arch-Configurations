@@ -192,18 +192,23 @@ wpf() {
 
     if [[ -d $wallpaper_directory ]]
     then
-        preview="file {}"
-        if { which img2txt || type img2txt; } &>/dev/null
-        then
-            preview="img2txt -H $(tput lines) {}"
-        fi
+        [[ -f "$HOME/.wallpaper" ]] && cp $HOME/.wallpaper $HOME/.old_wallpaper
 
-        wp $( \
+        new_wallpaper=$( \
             find $wallpaper_directory -type f \
             | fzf --reverse\
-                --preview="$preview" \
-                --preview-window=down,80% \
+                --preview="feh --bg-scale {}" \
+                --preview-window=0% \
         )
+
+        stty rows $term_rows cols $term_cols &>/dev/null
+
+        if [[ -n "$new_wallpaper" ]]
+        then
+            wp $new_wallpaper
+        else
+            wp $HOME/.old_wallpaper
+        fi
     else
         echo -e "\n - [ERROR] $wallpaper_directory doesn't exist! - \n"
         return 1
@@ -271,8 +276,9 @@ deletesnap() {
 }
 
 batt() {
-    ls /sys/class/power_supply/*/capacity &>/dev/null && {
-        for capacity_path in $(ls /sys/class/power_supply/*/capacity);
+    if /sys/class/power_supply/*/capacity &>/dev/null
+    then
+        for capacity_path in $(ls /sys/class/power_supply/*/capacity)
         do
             batt_path=$(dirname $(ls $capacity_path))
             batt_name=$(basename $batt_path)
@@ -283,7 +289,10 @@ batt() {
             [[ $batt_percentage -gt 99 ]] && { batt_percentage=100; unset charging; } 
             echo "$(basename $batt_name): $charging$batt_percentage%"
         done
-    } || { echo "No Batteries Found">&2; return 1; }
+    else 
+        echo "No Batteries Found">&2
+        return 1
+    fi
 }
 
 f() {
