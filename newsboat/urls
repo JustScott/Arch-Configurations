@@ -16,12 +16,12 @@ https://feeds.redcircle.com/597cfd00-b29a-49c6-9622-03c8decfc35f "Cyber Security
 https://feeds.megaphone.fm/darknetdiaries "Cyber Security Stories" "~Darknet Diaries"
 
 " "
-"--- Cyber Security News ---"
+"--- Cyber Security News Articles ---"
 # Cyber Security News
 https://krebsonsecurity.com/feed/ "Cyber Security News" "~Krebs on Security"
 
 " "
-"--- Development News ---"
+"--- Development News Articles ---"
 # Development News
 https://archlinux.org/feeds/news/ "Development News" "~Arch Linux"
 
@@ -35,8 +35,6 @@ https://lukesmith.xyz/index.xml "Blogs" "~Luke Smith"
 # Youtube
 https://www.youtube.com/feeds/videos.xml?channel_id=UCimiUgDLbi6P17BdaCZpVbg "YouTube" "~exurb1a"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCcoO-8J0EYQHGPFQqwmAzVQ "YouTube" "~exurb2a"
-https://www.youtube.com/feeds/videos.xml?channel_id=UCO5QSoES5yn2Dw7YixDYT5Q "YouTube" "~Aperature"
-https://www.youtube.com/feeds/videos.xml?channel_id=UCij1VEjDb88RCbqsvZ1gqaw "YouTube" "~side of Burritos"
 
 " "
 "--- Oydsee ---"

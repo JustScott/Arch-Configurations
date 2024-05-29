@@ -32,10 +32,9 @@ do
     update-status-bar
 done &
 
-# Update the weather every 5 minutes
 while true;    
 do    
-    sleep 1200
+    sleep 1h
     update-status-bar --weather
 done &
 

@@ -166,6 +166,13 @@ define() {
     return 1
 }
 
+# Easy daily journal stored in notes by date
+j() {
+    months_directory=$HOME/notes/Journal/$(date +"%Y")/$(date +"%B")
+    mkdir -p $months_directory 2>/dev/null
+    $EDITOR $months_directory/$(date +"%d").md
+}
+
 # sets wall paper
 wp() {
     [[ -z "$DISPLAY" ]] && {
