@@ -42,7 +42,7 @@ done &
 while true;    
 do    
     sleep 15
-    update-status-bar --volume --brightness --battery --network 
+    update-status-bar --volume --brightness --battery --network --bluetooth
     # Enables laptop monitor if no external monitors are connected
     enable-main-display
 done &

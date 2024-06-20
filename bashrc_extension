@@ -32,6 +32,7 @@
 
 export PAGER="bat --paging=always --style=plain"
 export EDITOR=nvim
+alias e='nvim'
 export CALCURSE_PAGER="bat --paging=always --style=plain --language=markdown"
 
 export HISTFILESIZE=10000
@@ -168,9 +169,18 @@ define() {
 
 # Easy daily journal stored in notes by date
 j() {
-    months_directory=$HOME/notes/Journal/$(date +"%Y")/$(date +"%B")
+    months_directory=$HOME/notes/Writing/Journal/$(date +"%Y")/$(date +"%B")
     mkdir -p $months_directory 2>/dev/null
     $EDITOR $months_directory/$(date +"%d").md
+}
+
+blog() {
+    blog_directory=$HOME/notes/Writing/Blog
+    mkdir -p $blog_directory 2>/dev/null
+    lf $blog_directory || {
+        echo "Failed to open blog... is lf installed?"
+        (exit 1)
+    }
 }
 
 # sets wall paper
@@ -283,7 +293,7 @@ deletesnap() {
 }
 
 batt() {
-    if /sys/class/power_supply/*/capacity &>/dev/null
+    if ls /sys/class/power_supply/*/capacity &>/dev/null
     then
         for capacity_path in $(ls /sys/class/power_supply/*/capacity)
         do
