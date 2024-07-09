@@ -85,6 +85,17 @@ then
         || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
 fi
 
+if { which foot || type foot; } &>/dev/null
+then
+    ACTION="Create soft link to '$HOME/.config/foot/foot.ini'"
+    {
+        mkdir -p $HOME/.config/foot
+        ln -sf $PWD/foot/foot.ini $HOME/.config/foot/
+    } >/dev/null 2>>/tmp/archconfigurationerrors.log \
+        && echo "[SUCCESS] $ACTION" \
+        || echo "[FAIL] $ACTION... wrote error log to /tmp/archconfigurationerrors.log"
+fi
+
 if { which lf || type lf; } &>/dev/null
 then
     ACTION="Create soft link to '$HOME/.config/lf/{lfrc,previewer.sh}'"
