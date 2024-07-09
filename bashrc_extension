@@ -185,22 +185,31 @@ blog() {
 
 # sets wall paper
 wp() {
-    [[ -z "$DISPLAY" ]] && {
-        echo "[ERROR] Need a graphical environment active to set wallpaper"
-        return 1
-    }
-
     new_wallpaper_file_path="$1"
     wallpaper_file_path=$HOME/.wallpaper
 
-    [[ -f "$new_wallpaper_file_path" ]] && {
+    if ! [[ -f "$new_wallpaper_file_path" ]]
+    then
+        echo "[ERROR] Specified wallpaper path doesn't exist"
+        return 1
+    fi
+
+    if [[ -n "$DISPLAY" && -z "$WAYLAND_DISPLAY" ]]
+    then
         cp "$new_wallpaper_file_path" $wallpaper_file_path
         feh --bg-scale $wallpaper_file_path
-    }
+    elif [[ -n "$WAYLAND_DISPLAY" ]]
+    then
+        cp "$new_wallpaper_file_path" $wallpaper_file_path
+        swaybg --mode fill --image $wallpaper_file_path &
+    else
+        echo "[ERROR] Need a graphical environment active to set wallpaper"
+        return 1
+    fi
 }
 
 wpf() {
-    [[ -z "$DISPLAY" ]] && {
+    [[ -z "$DISPLAY" && -z "$WAYLAND_DISPLAY" ]] && {
         echo "[ERROR] Need a graphical environment active to set wallpaper"
         return 1
     }

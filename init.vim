@@ -31,6 +31,7 @@ augroup remember_folds     " Saves folds automatically
 augroup end
 set splitright          " Open new vertical windows on the right 
 set number relativenumber
+colorscheme vim " Use the pre version 0.10 color schemes for now
 
 " Remaps the window navigation keys
 nnoremap <C-h> <C-w>h

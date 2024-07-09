@@ -57,12 +57,12 @@ pulseaudio --start # Start the audio daemon
 pamixer -u # Un-mute the speaker
 
 # Mute speaker if screen locks. Unmute if unlocked and still muted
-while true; 
-do
-    sleep 15
-    xscreensaver-command -time | grep -i "locked" &>/dev/null \
-        && pacmd suspend 1
-done &
+#while true; 
+#do
+#    sleep 15
+#    xscreensaver-command -time | grep -i "locked" &>/dev/null \
+#        && pacmd suspend 1
+#done &
 
 # If in a virtual machine, automatically set the resolution
 xrandr | grep "Virtual-1 connected " && xrandr --output Virtual-1 --mode 1920x1080
