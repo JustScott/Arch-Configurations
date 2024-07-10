@@ -44,6 +44,21 @@ alias up='ping quad9.net -c 4'
 alias newsboat='newsboat -c ~/.config/newsboat/cache.db'
 alias dlynx="lynx -cfg=$HOME/.config/lynx/lynx.cfg"
 
+if which bemenu &>/dev/null; then
+    alias bemenu-run="bemenu-run --fn 'monospace [14]' -w"
+    alias bemenu="bemenu --fn 'monospace [14]' -w"
+fi
+
+if which dwl &>/dev/null; then
+    alias 1monitor="wlr-randr --output eDP-1 --on --pos 0,0 --output DP-4 --off --output DP-3 --off"
+    alias 2monitors="wlr-randr --output eDP-1 --off --output DP-4 --on --pos 1920,0 --output DP-3 --on --pos 3840,0"
+    alias 3monitors="wlr-randr --output eDP-1 --on --pos 0,0 --output DP-4 --on --pos 1920,0 --output DP-3 --on --pos 3840,0"
+elif which dwm &>/dev/null; then
+    test
+fi
+
+
+
 # Saves any running VirtualMachines before shutting down
 safe_shutdown() {
     { which calcurse || type calcurse; } &>/dev/null && {
