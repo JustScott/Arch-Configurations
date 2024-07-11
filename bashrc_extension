@@ -364,12 +364,29 @@ f() {
 p() {
     pass_command=$1
 
+    copy=false
+    if [[ "$pass_command" == "c" ]]; then
+        copy=true
+        unset pass_command
+    fi
+
     ORIGINAL_PWD="$PWD"
     [[ -n "$PASSWORD_STORE_DIR" ]] \
         && cd $PASSWORD_STORE_DIR \
         || cd $HOME/.password-store
 
-    pass $pass_command $(find . -type f -name "*.gpg" | sed 's/^\.\///; s/\.gpg$//' | fzf --reverse)
+    password=$(pass $pass_command $(find . -type f -name "*.gpg" | sed 's/^\.\///; s/\.gpg$//' | fzf --reverse))
+
+    if $copy; then
+        if which dwl &>/dev/null && echo $password | wl-copy; then
+            echo "Copied!"
+        else
+            echo "Failed to copy with wl-copy"
+            exit 1 &>/dev/null
+        fi
+    else
+        echo $password
+    fi
 
     cd "$ORIGINAL_PWD"
 }
