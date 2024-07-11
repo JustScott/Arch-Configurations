@@ -245,14 +245,22 @@ wpf() {
     then
         [[ -f "$HOME/.wallpaper" ]] && cp $HOME/.wallpaper $HOME/.old_wallpaper
 
-        new_wallpaper=$( \
-            find $wallpaper_directory -type f \
-            | fzf --reverse\
-                --preview="feh --bg-scale {}" \
-                --preview-window=0% \
-        )
+        if which dwl &>/dev/null; then
+            new_wallpaper=$( \
+                find $wallpaper_directory -type f \
+                | fzf --reverse\
+                    --preview="swaybg --mode fit --image {}" \
+                    --preview-window=0% \
+            )
+        elif which dwm &>/dev/null; then
+            new_wallpaper=$( \
+                find $wallpaper_directory -type f \
+                | fzf --reverse\
+                    --preview="feh --bg-scale {}" \
+                    --preview-window=0% \
+            )
+        fi
 
-        stty rows $term_rows cols $term_cols &>/dev/null
 
         if [[ -n "$new_wallpaper" ]]
         then
