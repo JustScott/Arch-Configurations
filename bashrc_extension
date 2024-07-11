@@ -54,7 +54,17 @@ if which dwl &>/dev/null; then
     alias 2monitors="wlr-randr --output eDP-1 --off --output DP-4 --on --pos 1920,0 --output DP-3 --on --pos 3840,0"
     alias 3monitors="wlr-randr --output eDP-1 --on --pos 0,0 --output DP-4 --on --pos 1920,0 --output DP-3 --on --pos 3840,0"
 elif which dwm &>/dev/null; then
-    test
+    main_monitor="eDP-1"
+    middle_monitor="DP-2-2"
+    right_monitor="DP-2-1"
+    home_monitor="DP-2-2"
+
+    alias 3monitors="set-monitors $main_monitor $middle_monitor $right_monitor"
+    alias 2monitors="set-monitors $middle_monitor $right_monitor;xrandr --output $main_monitor --off"
+    alias 1monitor="set-monitors $main_monitor;xrandr --output $middle_monitor --off --output $right_monitor --off --output $home_monitor --off"
+
+    alias 2home_monitors="set-monitors $main_monitor $home_monitor"
+    alias 1home_monitor="set-monitors $home_monitor; xrandr --output $main_monitor --off"
 fi
 
 
@@ -344,12 +354,14 @@ f() {
 }
 
 p() {
+    pass_command=$1
+
     ORIGINAL_PWD="$PWD"
     [[ -n "$PASSWORD_STORE_DIR" ]] \
         && cd $PASSWORD_STORE_DIR \
         || cd $HOME/.password-store
 
-    pass $(find . -type f -name "*.gpg" | sed 's/^\.\///; s/\.gpg$//' | fzf --reverse)
+    pass $pass_command $(find . -type f -name "*.gpg" | sed 's/^\.\///; s/\.gpg$//' | fzf --reverse)
 
     cd "$ORIGINAL_PWD"
 }
