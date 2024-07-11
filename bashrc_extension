@@ -343,6 +343,17 @@ f() {
     [[ -f $fzf_path ]] && nvim $fzf_path -c "cd $(dirname $fzf_path)"
 }
 
+p() {
+    ORIGINAL_PWD="$PWD"
+    [[ -n "$PASSWORD_STORE_DIR" ]] \
+        && cd $PASSWORD_STORE_DIR \
+        || cd $HOME/.password-store
+
+    pass $(find . -type f -name "*.gpg" | sed 's/^\.\///; s/\.gpg$//' | fzf --reverse)
+
+    cd "$ORIGINAL_PWD"
+}
+
 space() {
     filesystem_type=$(stat -f -c "%T" /)
 
