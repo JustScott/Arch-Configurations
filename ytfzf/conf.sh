@@ -5,7 +5,7 @@
 ##Functions {{{
 external_menu () {
     if which bemenu &>/dev/null; then
-        bemenu -l 15 --fn "monospace [14]" -w "$1"
+        bemenu -l 15 --fn "monospace [14]" -w -p "YT || Odysee" "$1"
     fi
 }
 #}}}
