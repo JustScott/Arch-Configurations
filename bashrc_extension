@@ -380,11 +380,14 @@ p() {
     password=$(pass $pass_command $(find . -type f -name "*.gpg" | sed 's/^\.\///; s/\.gpg$//' | fzf --reverse))
 
     if $copy; then
-        if which dwl &>/dev/null && echo $password | wl-copy; then
-            echo "Copied!"
+        if [[ -n "$WAYLAND_DISPLAY" ]] && echo $password | wl-copy; then
+            echo "Copied with wl-copy! Clearing in 20 seconds"
+            (sleep 20 && echo "" | wl-copy &) &>/dev/null
+        elif which xclip &>/dev/null && echo $password | xclip -selection clipboard; then
+            echo "Copied with xclip! Clearing in 20 seconds"
+            (sleep 20 && echo "" | xclip -selection clipboard &) &>/dev/null
         else
-            echo "Failed to copy with wl-copy"
-            exit 1 &>/dev/null
+            echo "Failed to copy with wl-copy or xclip"
         fi
     else
         echo $password
