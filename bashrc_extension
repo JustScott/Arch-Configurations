@@ -44,8 +44,6 @@ alias up='ping quad9.net -c 4'
 alias newsboat='newsboat -c ~/.config/newsboat/cache.db'
 alias dlynx="lynx -cfg=$HOME/.config/lynx/lynx.cfg"
 
-alias status="update-status-bar --brightness --volume --battery --network --bluetooth"
-
 if which bemenu &>/dev/null; then
     alias bemenu-run="bemenu-run --fn 'monospace [14]' -w"
     alias bemenu="bemenu --fn 'monospace [14]' -w"
@@ -68,7 +66,6 @@ elif which dwm &>/dev/null; then
     alias 2home_monitors="set-monitors $main_monitor $home_monitor"
     alias 1home_monitor="set-monitors $home_monitor; xrandr --output $main_monitor --off"
 fi
-
 
 
 # Saves any running VirtualMachines before shutting down
@@ -241,39 +238,35 @@ wpf() {
         return 1
     }
 
-    wallpaper_directory=$HOME/Pictures/Wallpapers
+    WALLPAPER_DIRECTORY=$HOME/Pictures/Wallpapers
+    mkdir -p $WALLPAPER_DIRECTORY &>/dev/null
 
-    if [[ -d $wallpaper_directory ]]
-    then
-        [[ -f "$HOME/.wallpaper" ]] && cp $HOME/.wallpaper $HOME/.old_wallpaper
+    [[ -f "$HOME/.wallpaper" ]] && cp $HOME/.wallpaper $HOME/.old_wallpaper
 
-        if [[ -n "$WAYLAND_DISPLAY" ]]; then
-            new_wallpaper=$( \
-                find $wallpaper_directory -type f \
-                | fzf --reverse\
-                    --preview="swaybg --mode fit --image {}" \
-                    --preview-window=0% \
-            )
-        elif which dwm &>/dev/null; then
-            new_wallpaper=$( \
-                find $wallpaper_directory -type f \
-                | fzf --reverse\
-                    --preview="feh --bg-scale {}" \
-                    --preview-window=0% \
-            )
-        fi
-
-
-        if [[ -n "$new_wallpaper" ]]
-        then
-            wp $new_wallpaper
-        else
-            wp $HOME/.old_wallpaper
-        fi
-    else
-        echo -e "\n - [ERROR] $wallpaper_directory doesn't exist! - \n"
-        return 1
+    if [[ -n "$WAYLAND_DISPLAY" ]]; then
+        new_wallpaper=$( \
+            find $WALLPAPER_DIRECTORY -type f \
+            | fzf --reverse\
+                --preview="swaybg --mode fit --image {}" \
+                --preview-window=0% \
+        )
+    elif which dwm &>/dev/null; then
+        new_wallpaper=$( \
+            find $WALLPAPER_DIRECTORY -type f \
+            | fzf --reverse\
+                --preview="feh --bg-scale {}" \
+                --preview-window=0% \
+        )
     fi
+
+
+    if [[ -n "$new_wallpaper" ]]
+    then
+        wp $new_wallpaper
+    else
+        wp $HOME/.old_wallpaper
+    fi
+    
 }
 
 play() {
