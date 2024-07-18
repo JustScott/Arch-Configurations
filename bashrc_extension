@@ -225,7 +225,7 @@ wp() {
     elif [[ -n "$WAYLAND_DISPLAY" ]]
     then
         cp "$new_wallpaper_file_path" $wallpaper_file_path
-        swaybg --mode fit --image $wallpaper_file_path &>/dev/null &
+        swaybg --mode fill --image $wallpaper_file_path &>/dev/null &
     else
         echo "[ERROR] Need a graphical environment active to set wallpaper"
         return 1
@@ -247,7 +247,7 @@ wpf() {
         new_wallpaper=$( \
             find $WALLPAPER_DIRECTORY -type f \
             | fzf --reverse\
-                --preview="swaybg --mode fit --image {}" \
+                --preview="swaybg --mode fill --image {}" \
                 --preview-window=0% \
         )
     elif which dwm &>/dev/null; then
