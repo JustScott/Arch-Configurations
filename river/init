@@ -23,6 +23,38 @@ riverctl background-color 0x002b36
 riverctl border-color-focused 0x93a1a1
 riverctl border-color-unfocused 0x586e75
 
+if which creek &>/dev/null; then
+    # Initialize status-bar values 
+    update-status-bar --all &
+
+    # Update just the date every second
+    while true;    
+    do    
+        sleep 1
+        update-status-bar
+    done &
+
+    while true;    
+    do    
+        sleep 1h
+        update-status-bar --weather
+    done &
+
+    # Update most of the values every 15 seconds
+    while true;    
+    do    
+        sleep 15
+        update-status-bar --volume --brightness --battery --network --bluetooth
+    done &
+
+    while cat /tmp/status_bar_info;
+    do
+        sleep 1
+    done | creek \
+            -fn monospace:size=16 -hg 28 -nf 0xffffff \
+            -nb 0x222222 -ff 0xffffff -fb 0x005577 &
+fi
+
 # Custom Shortcuts
 riverctl map normal $MODKEY+Shift Return spawn 'foot'
 riverctl map normal $MODKEY P spawn 'bemenu-run --fn "monospace [14]"'
