@@ -23,9 +23,9 @@
 [[ -z "$DISPLAY" && -z "$WAYLAND_DISPLAY" ]] && {
     # set the size
     stty -a | grep "rows 24; columns 80;" &>/dev/null && {
-        stty rows 46 cols 171 &>/dev/null # dwm with st
-        # river with foot 
-        [[ "$TERM" == "vt220" ]] && stty rows 40 cols 172 &>/dev/null
+        # Default to smaller foot terminal sizing to prevent breakage
+        stty rows 40 cols 171 &>/dev/null # river with foot
+        #stty rows 46 cols 171 &>/dev/null # dwm with st
     }
     # enable color
     export TERM=xterm-256color
