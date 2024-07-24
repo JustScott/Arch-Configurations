@@ -374,7 +374,6 @@ p() {
     copy=false
     if [[ "$pass_command" == "c" ]]; then
         copy=true
-        unset pass_command
     fi
 
     ORIGINAL_PWD="$PWD"
@@ -393,7 +392,7 @@ p() {
                 return 0
             ;;
             "c")
-                password=$(pass $pass_command "$fzf_password")
+                password=$(pass "$fzf_password")
             ;;
             *)
                 pass $pass_command "$fzf_password"
