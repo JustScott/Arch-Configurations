@@ -388,7 +388,11 @@ p() {
     if [[ -n "$fzf_password" ]]
     then
         case $pass_command in
-            ""|"c")
+            "")
+                pass show "$fzf_password"
+                return 0
+            ;;
+            "c")
                 password=$(pass $pass_command "$fzf_password")
             ;;
             *)
@@ -410,7 +414,7 @@ p() {
             echo "Failed to copy with wl-copy or xclip"
         fi
     else
-        [[ -n "$password" ]] && echo $password
+        [[ -n "$password" ]] && echo "$password"
     fi
 }
 
