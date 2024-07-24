@@ -7,7 +7,9 @@ pamixer -u # Un-mute the speaker
 WALLPAPER=$HOME/.wallpaper
 [[ -f $WALLPAPER ]] && swaybg --mode fit --image $WALLPAPER &
 
-swayidle -w timeout 600 'waylock' &>/dev/null &
+swayidle -w \
+    timeout 600 'waylock' \
+    before-sleep 'waylock' &>/dev/null &
 
 # Use Alt on host and Super in Virtual Machines
 MODKEY=Alt

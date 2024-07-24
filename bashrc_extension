@@ -46,6 +46,9 @@ alias up='ping quad9.net -c 4'
 alias newsboat='newsboat -c ~/.config/newsboat/cache.db'
 alias dlynx="lynx -cfg=$HOME/.config/lynx/lynx.cfg"
 
+alias sroot="sudo snapper -c root"
+alias shome="sudo snapper -c home"
+
 if which bemenu &>/dev/null; then
     alias bemenu-run="bemenu-run --fn 'monospace [14]' -w"
     alias bemenu="bemenu --fn 'monospace [14]' -w"
@@ -379,7 +382,22 @@ p() {
         && cd $PASSWORD_STORE_DIR \
         || cd $HOME/.password-store
 
-    password=$(pass $pass_command $(find . -type f -name "*.gpg" | sed 's/^\.\///; s/\.gpg$//' | fzf --reverse))
+    fzf_password=$(find . -type f -name "*.gpg" | sed 's/^\.\///; s/\.gpg$//' | fzf --reverse)
+    cd "$ORIGINAL_PWD"
+
+    if [[ -n "$fzf_password" ]]
+    then
+        case $pass_command in
+            ""|"c")
+                password=$(pass $pass_command "$fzf_password")
+            ;;
+            *)
+                pass $pass_command "$fzf_password"
+                return 0                
+            ;;
+        esac
+
+    fi
 
     if $copy; then
         if [[ -n "$WAYLAND_DISPLAY" ]] && echo $password | wl-copy; then
@@ -392,10 +410,8 @@ p() {
             echo "Failed to copy with wl-copy or xclip"
         fi
     else
-        echo $password
+        [[ -n "$password" ]] && echo $password
     fi
-
-    cd "$ORIGINAL_PWD"
 }
 
 space() {
