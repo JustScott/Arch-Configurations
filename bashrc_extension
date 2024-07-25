@@ -58,6 +58,15 @@ if [[ -n "$WAYLAND_DISPLAY" ]]; then
     alias 1monitor="wlr-randr --output eDP-1 --on --pos 0,0 --output DP-4 --off --output DP-3 --off"
     alias 2monitors="wlr-randr --output eDP-1 --off --output DP-4 --on --pos 1920,0 --output DP-3 --on --pos 3840,0"
     alias 3monitors="wlr-randr --output eDP-1 --on --pos 0,0 --output DP-4 --on --pos 1920,0 --output DP-3 --on --pos 3840,0"
+    
+    if uname -r | grep "pinetab2" &>/dev/null
+    then
+        if wlr-randr | grep "HDMI-A-1" &>/dev/null; then
+            alias 1monitor="wlr-randr --output DSI-1 --off --output HDMI-A-1 --on --pos 0,0"
+            alias 2monitors="wlr-randr --output DSI-1 --on --transform 270 --pos 0,1280 --output HDMI-A-1 --on --pos 0,0"
+        fi
+    fi
+
 elif which dwm &>/dev/null; then
     main_monitor="eDP-1"
     middle_monitor="DP-2-2"

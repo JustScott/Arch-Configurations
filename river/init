@@ -5,7 +5,7 @@ pamixer -u # Un-mute the speaker
 
 # Set wallpaper
 WALLPAPER=$HOME/.wallpaper
-[[ -f $WALLPAPER ]] && swaybg --mode fit --image $WALLPAPER &
+[[ -f $WALLPAPER ]] && swaybg --mode fill --image $WALLPAPER &
 
 swayidle -w \
     timeout 600 'waylock' \
@@ -18,6 +18,8 @@ if wlr-randr | grep "Virtual-1" &>/dev/null; then
 
     # If in a virtual machine, automatically set the resolution
     wlr-randr --output Virtual-1 --mode 1920x1080
+elif uname -r | grep "pinetab2" &>/dev/null; then
+    wlr-randr --output DSI-1 --transform 270
 fi
 
 # Set background and border color
@@ -58,11 +60,16 @@ if which creek &>/dev/null; then
             -nb 0x222222 -ff 0xffffff -fb 0x005577 &
 fi
 
+
 # Custom Shortcuts
 riverctl map normal $MODKEY+Shift Return spawn 'foot'
 riverctl map normal $MODKEY P spawn 'bemenu-run --fn "monospace [14]"'
 riverctl map normal $MODKEY S spawn 'waylock'
-riverctl map normal $MODKEY R spawn 'wlr-randr --output eDP-1 --on --pos 0,0 --output DP-4 --off --output DP-3 --off'
+if uname -r | grep "pinetab2" &>/dev/null; then
+    riverctl map normal $MODKEY R spawn "wlr-randr --output DSI-1 --on --pos 0,0 --output HDMI-A-1 --off"
+else
+    riverctl map normal $MODKEY R spawn "wlr-randr --output eDP-1 --on --pos 0,0 --output DP-4 --off --output DP-3 --off"
+fi
 
 riverctl map normal $MODKEY Up spawn 'volume-up'
 riverctl map normal $MODKEY Down spawn 'volume-down'
