@@ -81,6 +81,17 @@ elif which dwm &>/dev/null; then
     alias 1home_monitor="set-monitors $home_monitor; xrandr --output $main_monitor --off"
 fi
 
+# pacman + fzf
+if which pacman &>/dev/null; then
+    package_manager="pacman"
+    which yay &>/dev/null && package_manager="yay"
+    if which fzf &>/dev/null; then
+        # Package list : list all installed packages
+        alias pl="$package_manager -Qq | fzf --preview '$package_manager -Qi {}' --layout=reverse"
+        # Package search : list all packages
+        alias ps="$package_manager -Slq | fzf --preview '$package_manager -Si {}' --layout=reverse"
+    fi
+fi
 
 # Saves any running VirtualMachines before shutting down
 safe_shutdown() {
@@ -441,4 +452,9 @@ space() {
             && df -h / \
             || echo "Unsupported filesystem type: '$filesystem_type'"
     }
+}
+
+change_timezone() {
+    new_timezone=$(timedatectl list-timezones | fzf --reverse)
+    [[ -n "$new_timezone" ]] && sudo ln -sf /usr/share/zoneinfo/$new_timezone /etc/localtime
 }
