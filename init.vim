@@ -14,6 +14,25 @@
 " You should have received a copy of the GNU Affero General Public License
 " along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+
+"
+" Syntax Refresher
+"    map - Map a key in normal & visual+select modes
+"    noremap - map a non-recurseive key in normal & visual+select modes
+"
+"    Mapping Mode Prefix:
+"    --------------
+"     + example: `nmap`
+"     * `n` - only in normal mode
+"     * `v` - only visual+select mode
+"     * `x` - visual only
+"     * `s` - select only
+"     * `i` - insert only
+"     * `c` - command-line only
+"
+"    <CR> - Carriage Return: Programmatically click enter
+"
+
 set incsearch                   " Searches for matches live
 set ignorecase                    " Do case insensitive matching
 set tabstop=4                     " Default indentation of 4 spaces
@@ -25,10 +44,6 @@ syntax on                             " Gives files syntax highlighting
 set autoindent                  " Automatically indent when moving to next line
 set expandtab                   " Automatically converts tabs to spaces
 filetype on                            " Detects files for syntax highlighting automatically
-augroup remember_folds     " Saves folds automatically
-    autocmd BufWinLeave * mkview
-    autocmd BufWinEnter * silent! loadview
-augroup end
 set splitright          " Open new vertical windows on the right 
 set number relativenumber
 colorscheme vim " Use the pre version 0.10 color schemes for now
@@ -48,11 +63,18 @@ noremap <silent> <C-Down> :resize -3<CR>
 " Folding python code
 set foldmethod=indent
 set foldmarker={,}
+set foldlevel=0 " Close all folds when opening file
 nnoremap <space> za
-vnoremap <space> zf
+nnoremap <C-space> :set foldlevel=0<CR>
+"augroup remember_folds     " Saves folds automatically
+"    autocmd BufWinLeave * mkview
+"    autocmd BufWinEnter * silent! loadview
+"augroup end
+
 
 " Multiline Commenting
 "  Detect /bin/bash at the start of bash files, and set the file type to sh
+"   * helpful for executable bash files that don't have a file suffix
 autocmd BufRead,BufNewFile * if getline(1) =~# '^#!.*\bash' | setfiletype sh | endif
 "  Most languages use //
 vnoremap <C-c> :norm i//<CR>
@@ -72,9 +94,9 @@ nnoremap <C-P> :set number relativenumber<CR>
 nnoremap <C-O> :set nonumber norelativenumber<CR>
 
 " Manage tabs
-nnoremap <C-T> :tabnew<CR>
-nnoremap <C-]> :tabnext<CR>
-nnoremap <C-[> :tabprevious<CR>
+nnoremap <C-T> :tabnew<CR>:term<CR>:set nonumber norelativenumber<CR>:set laststatus=0<CR>:startinsert<CR>
+nnoremap <C-CR> :tabnext<CR>
+nnoremap <C-backspace> :tabprevious<CR>
 nnoremap <C-Q> :tabclose<CR>
 
 " Close the current window
