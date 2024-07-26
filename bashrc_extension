@@ -49,6 +49,8 @@ alias dlynx="lynx -cfg=$HOME/.config/lynx/lynx.cfg"
 alias sroot="sudo snapper -c root"
 alias shome="sudo snapper -c home"
 
+alias mf="man \$(ls /usr/share/man/man1 | awk -F. '{print \$1}' | fzf --reverse) 2>/dev/null"
+
 if which bemenu &>/dev/null; then
     alias bemenu-run="bemenu-run --fn 'monospace [14]' -w"
     alias bemenu="bemenu --fn 'monospace [14]' -w"
