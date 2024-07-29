@@ -51,6 +51,8 @@ alias shome="sudo snapper -c home"
 
 alias mf="man \$(ls /usr/share/man/man1 | awk -F. '{print \$1}' | fzf --reverse) 2>/dev/null"
 
+alias service="ls /lib/systemd/system/ | fzf --reverse --preview 'systemctl status {}' --preview-window '70%'"
+
 if which bemenu &>/dev/null; then
     alias bemenu-run="bemenu-run --fn 'monospace [14]' -w"
     alias bemenu="bemenu --fn 'monospace [14]' -w"
@@ -83,15 +85,18 @@ elif which dwm &>/dev/null; then
     alias 1home_monitor="set-monitors $home_monitor; xrandr --output $main_monitor --off"
 fi
 
-# pacman + fzf
+# pacman/yay + fzf
 if which pacman &>/dev/null; then
-    package_manager="pacman"
-    which yay &>/dev/null && package_manager="yay"
-    if which fzf &>/dev/null; then
+    # Package list : list all installed packages
+    alias pl="pacman -Qq | fzf --preview 'pacman -Qi {}' --layout=reverse --preview-window '70%'"
+    # Package search (find) : list all packages   ( 'ps' is taken by system utility )
+    alias pf="pacman -Slq | fzf --preview 'pacman -Si {}' --layout=reverse --preview-window '70%'"
+
+    if which yay &>/dev/null; then
         # Package list : list all installed packages
-        alias pl="$package_manager -Qq | fzf --preview '$package_manager -Qi {}' --layout=reverse"
-        # Package search : list all packages
-        alias ps="$package_manager -Slq | fzf --preview '$package_manager -Si {}' --layout=reverse"
+        alias yl="yay -Qq | fzf --preview 'yay -Qi {}' --layout=reverse --preview-window '70%'"
+        # Package search (find) : list all packages
+        alias yf="yay -Slq | fzf --preview 'yay -Si {}' --layout=reverse --preview-window '70%'"
     fi
 fi
 
@@ -458,5 +463,8 @@ space() {
 
 change_timezone() {
     new_timezone=$(timedatectl list-timezones | fzf --reverse)
-    [[ -n "$new_timezone" ]] && sudo ln -sf /usr/share/zoneinfo/$new_timezone /etc/localtime
+    if [[ -n "$new_timezone" ]]; then
+        sudo ln -sf /usr/share/zoneinfo/$new_timezone /etc/localtime
+        sudo systemctl restart systemd-timesyncd
+    fi
 }
