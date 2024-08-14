@@ -1,7 +1,7 @@
 #!/bin/sh
 
-pulseaudio --start # Start the audio daemon
-pamixer -u # Un-mute the speaker
+#pulseaudio --start # Start the audio daemon
+#pamixer -u # Un-mute the speaker
 
 # Set wallpaper
 WALLPAPER=$HOME/.wallpaper
