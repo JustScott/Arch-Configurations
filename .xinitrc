@@ -65,7 +65,7 @@ pamixer -u # Un-mute the speaker
 #done &
 
 # If in a virtual machine, automatically set the resolution
-xrandr | grep "Virtual-1 connected " && xrandr --output Virtual-1 --mode 1920x1080
+xrandr | grep "Virtual-1 connected " && xrandr --output Virtual-1 --mode 1920x1200
 
 # Set wallpaper
 WALLPAPER=/home/$USER/.wallpaper

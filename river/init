@@ -56,14 +56,14 @@ if which creek &>/dev/null; then
         sleep 1
         cat /tmp/status_bar_info
     done | creek \
-            -fn monospace:size=16 -hg 28 -nf 0xffffff \
+            -fn monospace:size=22 -hg 36 -nf 0xffffff \
             -nb 0x222222 -ff 0xffffff -fb 0x005577 &
 fi
 
 
 # Custom Shortcuts
 riverctl map normal $MODKEY+Shift Return spawn 'foot'
-riverctl map normal $MODKEY P spawn 'bemenu-run --fn "monospace [14]"'
+riverctl map normal $MODKEY P spawn "bemenu-run --fn 'monospace 20'"
 riverctl map normal $MODKEY S spawn 'waylock'
 if uname -r | grep "pinetab2" &>/dev/null; then
     riverctl map normal $MODKEY R spawn "wlr-randr --output DSI-1 --on --pos 0,0 --output HDMI-A-1 --off"
