@@ -26,6 +26,8 @@
         # Default to smaller foot terminal sizing to prevent breakage
         #stty rows 40 cols 171 &>/dev/null # river with foot
         #stty rows 46 cols 171 &>/dev/null # dwm with st
+        alias external_tty="stty rows 32 cols 135 &>/dev/null"    
+        alias primary_tty="stty rows 46 cols 159 &>/dev/null"    
         stty rows 46 cols 159 &>/dev/null # river with foot
     }
     # enable color
@@ -60,9 +62,9 @@ if which bemenu &>/dev/null; then
 fi
 
 if [[ -n "$WAYLAND_DISPLAY" ]]; then
-    alias 1monitor="wlr-randr --output eDP-1 --on --pos 0,0 --output DP-4 --off --output DP-3 --off"
-    alias 2monitors="wlr-randr --output eDP-1 --off --output DP-4 --on --pos 1920,0 --output DP-3 --on --pos 3840,0"
-    alias 3monitors="wlr-randr --output eDP-1 --on --pos 0,0 --output DP-4 --on --pos 1920,0 --output DP-3 --on --pos 3840,0"
+    alias 1monitor="wlr-randr --output eDP-1 --on --pos 0,0 --output DP-10 --off --output DP-9 --off"
+    alias 2monitors="wlr-randr --output eDP-1 --off --output DP-10 --on --pos 2256,0 --output DP-9 --on --pos 4176,0"
+    alias 3monitors="wlr-randr --output eDP-1 --on --pos 0,0 --output DP-10 --on --pos 2256,0 --output DP-9 --on --pos 4176,0"
     
     if uname -r | grep "pinetab2" &>/dev/null
     then
