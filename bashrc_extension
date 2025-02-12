@@ -21,15 +21,16 @@
 
 # if in a tty
 [[ -z "$DISPLAY" && -z "$WAYLAND_DISPLAY" ]] && {
-    # adjust the size
-    stty -a | grep "rows 24; columns 80;" &>/dev/null && {
+    #stty -a | grep "rows 24; columns 80;" &>/dev/null && {
         # Default to smaller foot terminal sizing to prevent breakage
         #stty rows 40 cols 171 &>/dev/null # river with foot
         #stty rows 46 cols 171 &>/dev/null # dwm with st
-        alias external_tty="stty rows 32 cols 135 &>/dev/null"    
-        alias primary_tty="stty rows 46 cols 159 &>/dev/null"    
-        stty rows 46 cols 159 &>/dev/null # river with foot
-    }
+    #}
+
+    alias external_tty="stty rows 32 cols 135 &>/dev/null"    
+    alias primary_tty="stty rows 46 cols 159 &>/dev/null"    
+    #stty rows 46 cols 159 &>/dev/null # river with foot
+
     # enable color
     export TERM=xterm-256color
 }
@@ -39,6 +40,13 @@ export PAGER="bat --paging=always --style=plain"
 export EDITOR=nvim
 alias e=$EDITOR
 export CALCURSE_PAGER="bat --paging=always --style=plain --language=markdown"
+
+alias grep='grep --color=auto'
+alias ls='ls --color=auto'
+
+alias gl='git log --pretty=format:"%C(yellow)%h%Creset    %C(green)%D%Creset %n    %s%n"'
+alias gla='git log --pretty=format:"%C(yellow)%h%Creset    %C(green)%D%Creset %n    %s%n%n%b%n"'
+alias nb='git checkout $(git branch | tr -d " " | grep -v "*" | fzf)'
 
 export HISTFILESIZE=10000
 export HISTSIZE=10000
@@ -55,6 +63,7 @@ alias shome="sudo snapper -c home"
 alias mf="man \$(ls /usr/share/man/man1 | awk -F. '{print \$1}' | fzf --reverse) 2>/dev/null"
 
 alias service="ls /lib/systemd/system/ | fzf --reverse --preview 'systemctl status {}' --preview-window '70%'"
+
 
 if which bemenu &>/dev/null; then
     alias bemenu-run="bemenu-run --fn 'monospace [14]' -w"
@@ -114,13 +123,7 @@ safe_shutdown() {
     }
 
     { which vm || type vm; } &>/dev/null && {
-        running_vms_list=$(vm list | grep "running")
-        [[ -n "$running_vms_list" ]] && {
-            echo "$running_vms_list" | while IFS= read -r line
-            do
-                vm save $(echo $line | awk '{print $1}')
-            done
-        }
+        vm save --all
     }
 
     return 0
