@@ -8,8 +8,8 @@ WALLPAPER=$HOME/.wallpaper
 [[ -f $WALLPAPER ]] && swaybg --mode fill --image $WALLPAPER &
 
 swayidle -w \
-    timeout 600 'waylock' \
-    before-sleep 'waylock' &>/dev/null &
+    timeout 600 'waylock;vm save --all' \
+    before-sleep 'waylock -ignore-empty-password' &>/dev/null &
 
 # Use Alt on host and Super in Virtual Machines
 MODKEY=Alt
@@ -64,11 +64,11 @@ fi
 # Custom Shortcuts
 riverctl map normal $MODKEY+Shift Return spawn 'foot'
 riverctl map normal $MODKEY P spawn "bemenu-run --fn 'monospace 20'"
-riverctl map normal $MODKEY S spawn 'waylock'
+riverctl map normal $MODKEY S spawn 'waylock;vm save --all'
 if uname -r | grep "pinetab2" &>/dev/null; then
     riverctl map normal $MODKEY R spawn "wlr-randr --output DSI-1 --on --pos 0,0 --output HDMI-A-1 --off"
 else
-    riverctl map normal $MODKEY R spawn "wlr-randr --output eDP-1 --on --pos 0,0 --output DP-4 --off --output DP-3 --off"
+    riverctl map normal $MODKEY R spawn "disconnect-external-displays"
 fi
 
 riverctl map normal $MODKEY Up spawn 'volume-up'
