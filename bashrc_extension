@@ -44,9 +44,9 @@ export CALCURSE_PAGER="bat --paging=always --style=plain --language=markdown"
 alias grep='grep --color=auto'
 alias ls='ls --color=auto'
 
-alias gl='git log --pretty=format:"%C(yellow)%h%Creset    %C(green)%D%Creset %n    %s%n"'
-alias gla='git log --pretty=format:"%C(yellow)%h%Creset    %C(green)%D%Creset %n    %s%n%n%b%n"'
-alias nb='git checkout $(git branch | tr -d " " | grep -v "*" | fzf)'
+alias gl='in_git_repo && git log --pretty=format:"%C(yellow)%h%Creset    %C(green)%D%Creset %n    %s%n"'
+alias gla='in_git_repo && git log --pretty=format:"%C(yellow)%h%Creset    %C(green)%D%Creset %n    %s%n%n%b%n"'
+alias nb='in_git_repo && git checkout $(git branch | tr -d " " | grep -v "*" | fzf)'
 
 export HISTFILESIZE=10000
 export HISTSIZE=10000
@@ -473,5 +473,30 @@ change_timezone() {
     if [[ -n "$new_timezone" ]]; then
         sudo ln -sf /usr/share/zoneinfo/$new_timezone /etc/localtime
         sudo systemctl restart systemd-timesyncd
+    fi
+}
+
+# Check if currently in a git repo
+in_git_repo() {
+    if git status &>/dev/null;
+    then
+        return 0
+    else
+        echo "Not in a git repository"
+        return 1
+    fi
+}
+
+# Change to branch, git log, then change back to original branch
+glb() {
+    if in_git_repo;
+    then
+        original_branch="$(git branch | grep "*" | tr -d " *")"
+
+        new_branch="$(git branch | grep -v "*" | tr -d " "  | fzf)"
+
+        git checkout $new_branch && gl
+
+        git checkout $original_branch
     fi
 }
