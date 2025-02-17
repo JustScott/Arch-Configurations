@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # install.sh - part of the Arch-Configurations project
-# Copyright (C) 2023, Scott Wyman, development@scottwyman.me
+# Copyright (C) 2023-2025, JustScott, development@justscott.me
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
