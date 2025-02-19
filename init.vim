@@ -37,7 +37,7 @@ set incsearch                   " Searches for matches live
 set ignorecase                    " Do case insensitive matching
 set tabstop=4                    " Sets the width of a tab character to 4 spaces.
 set shiftwidth=4                 " Sets the number of spaces to use for each step of indentation.
-autocmd FileType dart,yaml,c,cpp setlocal tabstop=2 shiftwidth=2 "Only use 2 spaces for tabs in dart files
+autocmd FileType dart,yaml,c,cpp,markdown setlocal tabstop=2 shiftwidth=2 "Only use 2 spaces for tabs in dart files
 set expandtab                    " Use spaces instead of tabs
 set autoindent                   " indent when moving to next line
 set whichwrap+=<,>,[,]      " Allows wrapping to next line with arrow keys
