@@ -122,9 +122,12 @@ safe_shutdown() {
         }
     }
 
-    { which vm || type vm; } &>/dev/null && {
-        vm save --all
-    }
+    if { which virsh || type virsh; } &>/dev/null
+    then
+        { which vm || type vm; } &>/dev/null && {
+            vm save --all
+        }
+    fi
 
     return 0
 }
@@ -133,13 +136,12 @@ shutdown_wrapper() {
     safe_shutdown || return 1
 
     # Gives the user so many seconds to cancel the shutdown 
-    echo -n -e "\nShutting Down In"
-    for number in {5..1}
-    do
-        echo -n "...$number"
+    for i in {5..1}; do
+        echo -ne "\rShutting Down In: $i"
         sleep 1
     done
     echo -e "\n"
+
     shutdown $@ 
 }
 
