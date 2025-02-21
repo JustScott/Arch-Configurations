@@ -149,14 +149,13 @@ alias shutdown=shutdown_wrapper
 reboot_wrapper() {
     safe_shutdown || return 1
 
-    # Gives the user so many seconds to cancel the reboot 
-    echo -n -e "\nRebooting In"
-    for number in {5..1}
-    do
-        echo -n "...$number"
+    # Gives the user so many seconds to cancel the shutdown 
+    for i in {5..1}; do
+        echo -ne "\rRebooting In: $i"
         sleep 1
     done
     echo -e "\n"
+
     reboot $@
 }
 
