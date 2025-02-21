@@ -104,13 +104,12 @@ if which pacman &>/dev/null; then
     alias pl="pacman -Qq | fzf --preview 'pacman -Qi {}' --layout=reverse --preview-window '70%'"
     # Package search (find) : list all packages   ( 'ps' is taken by system utility )
     alias pf="pacman -Slq | fzf --preview 'pacman -Si {}' --layout=reverse --preview-window '70%'"
-
-    if which yay &>/dev/null; then
-        # Package list : list all installed packages
-        alias yl="yay -Qq | fzf --preview 'yay -Qi {}' --layout=reverse --preview-window '70%'"
-        # Package search (find) : list all packages
-        alias yf="yay -Slq | fzf --preview 'yay -Si {}' --layout=reverse --preview-window '70%'"
-    fi
+fi
+if which yay &>/dev/null; then
+    # Package list : list all installed packages
+    alias yl="yay -Qq | fzf --preview 'yay -Qi {}' --layout=reverse --preview-window '70%'"
+    # Package search (find) : list all packages
+    alias yf="yay -Slq | fzf --preview 'yay -Si {}' --layout=reverse --preview-window '70%'"
 fi
 
 # Saves any running VirtualMachines before shutting down
