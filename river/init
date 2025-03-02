@@ -54,7 +54,7 @@ if which creek &>/dev/null; then
     while true;
     do
         sleep 1
-        cat /tmp/status_bar_info
+        cat $HOME/.tmp/status_bar_info 2>/dev/null
     done | creek \
             -fn monospace:size=22 -hg 36 -nf 0xffffff \
             -nb 0x222222 -ff 0xffffff -fb 0x005577 &
