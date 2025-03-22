@@ -64,6 +64,13 @@ alias mf="man \$(ls /usr/share/man/man1 | awk -F. '{print \$1}' | fzf --reverse)
 
 alias service="ls /lib/systemd/system/ | fzf --reverse --preview 'systemctl status {}' --preview-window '70%'"
 
+alias term=nvim_term;
+
+if command -v qutebrowser &>/dev/null;
+then
+    export BROWSER=qutebrowser
+fi
+
 
 if which bemenu &>/dev/null; then
     alias bemenu-run="bemenu-run --fn 'monospace [14]' -w"
@@ -499,4 +506,60 @@ glb() {
 
         git checkout $original_branch
     fi
+}
+
+nvim_term() {
+    if command -v nvim &>/dev/null && [[ $INSIDE_NVIM_TERM != true ]];
+    then
+        export INSIDE_NVIM_TERM=true
+        exec nvim +'term' '+set nonumber norelativenumber' '+set laststatus=0' '+startinsert'
+    fi
+}
+
+ask() {
+    model="$1"
+    prompt="${@:2}"
+    log_file_path="/tmp/ollama_prompt_outputs/$1_outputs.md"
+
+    if ! pacman -Q ollama &>/dev/null
+    then
+        echo "[ERROR] You need to install ollama first"
+        echo -e "\t* (hint) run 'sudo pacman -S ollama'"
+        return 1
+    fi
+
+    if ! systemctl is-active ollama &>/dev/null
+    then
+        echo "[ERROR] You need to start the ollama service first"
+        echo -e "\t* (hint) run 'sudo systemctl enable --now ollama'"
+        return 1
+    fi
+
+    if ! ollama list | grep "$model" &>/dev/null
+    then
+        echo "[ERROR] Model '$model' doesn't exist"
+        echo -e "\t* (hint) Run 'ollama list' to see available models"
+        return 1
+    fi
+
+    if ! test -f "$log_file_path"
+    then
+        echo "vim: set nofoldenable :" > $log_file_path
+    fi
+
+    echo -e "\n\n###############################" >> "$log_file_path"
+    echo -e "\nPrompt:\n---\n$prompt\n---" | fold -s -w 80 >> "$log_file_path"
+    echo -e "\nResponse:\n---" >> "$log_file_path"
+
+    ollama run "$model" "$prompt" | while IFS= read -r line; do
+        echo "$line" | fold -s -w 80
+    done | tee -a "$log_file_path" | bat --paging=always --style=plain --language=markdown
+
+    echo "---" >> "$log_file_path"
+}
+
+ask_log() {
+    log_file_path="/tmp/ollama_prompt_outputs/$1_outputs.md"
+
+    $EDITOR "$log_file_path" 
 }

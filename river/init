@@ -79,6 +79,7 @@ riverctl map normal $MODKEY Left spawn 'brightness-down'
 riverctl map normal $MODKEY Y spawn 'ytfzf -D'
 riverctl map normal $MODKEY O spawn 'ytfzf -cO -D'
 
+riverctl map normal $MODKEY B spawn 'qutebrowser'
 
 # $MODKEY+Shift+C to close the focused view
 riverctl map normal $MODKEY+Shift C close

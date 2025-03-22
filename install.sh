@@ -197,3 +197,17 @@ then
             "Create soft link to '$HOME/.config/ytfzf/conf.sh'"
         [[ $? -ne 0 ]] && exit 1
 fi
+
+if { which ollama || type ollama; } &>/dev/null
+then
+    {
+        mkdir -p $HOME/.config/ollama/CustomModels
+        ln -sf $PWD/ollama/CustomModels/* $HOME/.config/ollama/CustomModels/
+    } >>"$STDOUT_LOG_PATH" 2>>"$STDERR_LOG_PATH" &
+        task_output $! "$STDERR_LOG_PATH" \
+            "Create soft link to '$HOME/.config/ollama/CustomModels'"
+        [[ $? -ne 0 ]] && exit 1
+
+    # TODO: Create ollama models with same name as file, display output
+    #       for each seperately
+fi
