@@ -183,6 +183,11 @@ hist_fzf() {
     done | fzf --reverse)"
 }
 
+dump() {
+    mkdir -p $HOME/notes
+    $EDITOR $HOME/notes/Dump.md
+}
+
 wttr() {
     if [[ -n "$LOCATION" ]]
     then
@@ -253,7 +258,7 @@ blog() {
     }
 }
 
-# sets wall paper
+# sets wallpaper
 wp() {
     new_wallpaper_file_path="$1"
     wallpaper_file_path=$HOME/.wallpaper
@@ -322,21 +327,35 @@ wpf() {
     fi
 }
 
-play() {
+mplay() {
+    lf $HOME/Music
+}
+
+mdownload() {
+    invidious_instance="https://invidious.materialio.us"
+
+    if ! curl ip.me &>/dev/null
+    then
+        echo "[ERROR] No connection to internet"
+        return 1
+    fi
+
     search="$@"
     if [[ ${#@} == 0 && -f $HOME/.play_history ]]
     then
-        if { which fzf || type fzf; } &>/dev/null
+        if ! { which fzf || type fzf; } &>/dev/null
         then
-            search="$(cat $HOME/.play_history | fzf --reverse)"
-        else
             echo "[ERROR] You need to pass a search term after play"
             return 1
+#        else
+#            search="$(cat $HOME/.play_history | fzf --reverse)"
         fi
     fi
 
     if { which ytfzf || type ytfzf; } &>/dev/null
     then
+        mkdir -p $HOME/Music
+        cd $HOME/Music
         if [[ -n "$search" ]]
         then
             # Avoid repeats
@@ -345,7 +364,8 @@ play() {
                 echo "$search" >> $HOME/.play_history
             fi
 
-            ytfzf -Am "$search"
+#            invidious_instance=$invidious_instance ytfzf --download --audio-only --random-select --loop "$search"
+            invidious_instance=$invidious_instance ytfzf --download --audio-only "$search"
         fi
     else
         echo -e "\n - [ERROR] ytfzf not installed - \n"
@@ -405,8 +425,8 @@ batt() {
 f() {
     fzf_path=$(find . -type d -o -type f | fzf --reverse)
 
-    [[ -d $fzf_path ]] && lf $fzf_path
-    [[ -f $fzf_path ]] && nvim $fzf_path -c "cd $(dirname $fzf_path)"
+    [[ -d $fzf_path ]] && lf "$fzf_path"
+    [[ -f $fzf_path ]] && nvim "$fzf_path" -c "cd $(dirname "$fzf_path")"
 }
 
 p() {
@@ -586,4 +606,9 @@ ask_log() {
     log_file_path="/tmp/ollama_prompt_outputs/$1_outputs.md"
 
     $EDITOR "$log_file_path" 
+}
+
+remind() {
+    mkdir -p $HOME/notes
+    $EDITOR $HOME/notes/Remind.md
 }
