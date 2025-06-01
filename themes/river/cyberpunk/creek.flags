@@ -1,0 +1,3 @@
+-fn monospace:size=28 -hg 38 \
+    -nf 0xc8d3f5 -nb 0x1f1f2f \
+    -ff 0x41b7c6 -fb 0x2a3a49

@@ -39,6 +39,9 @@ source ./shared_lib
 task_output $! "$STDERR_LOG_PATH" "Source bashrc_extension in $HOME/.bashrc"
 [[ $? -ne 0 ]] && exit 1
 
+ln -sf $PWD/themes $HOME/themes
+task_output $! "$STDERR_LOG_PATH" "Install themes"
+
 if { which nvim || type nvim; } &>/dev/null
 then
     {
@@ -211,3 +214,5 @@ then
     # TODO: Create ollama models with same name as file, display output
     #       for each seperately
 fi
+
+

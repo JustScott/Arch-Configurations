@@ -23,7 +23,7 @@ elif uname -r | grep "pinetab2" &>/dev/null; then
 fi
 
 # Set background and border color
-riverctl background-color 0x0E2A4A # 0x002b36
+riverctl background-color 0x002b36
 riverctl border-color-focused 0x93a1a1
 riverctl border-color-unfocused 0x586e75
 
@@ -55,9 +55,8 @@ if which creek &>/dev/null; then
     do
         sleep 1
         cat $HOME/.tmp/status_bar_info 2>/dev/null
-    done | creek \
-            -fn monospace:size=22 -hg 36 -nf 0xffffff \
-            -nb 0x222222 -ff 0xffffff -fb 0x005577 &
+    done | creek $(cat $HOME/.river_creek_theme) &
+# -fb 0x203347 0x1f1f2f
 fi
 
 

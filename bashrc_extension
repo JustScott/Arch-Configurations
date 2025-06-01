@@ -612,3 +612,32 @@ remind() {
     mkdir -p $HOME/notes
     $EDITOR $HOME/notes/Remind.md
 }
+
+theme() {
+    if ! [ -d $HOME/themes ]
+    then
+        echo "No themes directory in $HOME"
+        return 1
+    fi
+
+
+    if { which river || type river; } &>/dev/null
+    then
+        chosen_theme=$(ls $HOME/themes/river | fzf --reverse)
+        cp $HOME/themes/river/$chosen_theme/foot.ini $HOME/.config/foot/foot.ini
+        cp $HOME/themes/river/$chosen_theme/creek.flags $HOME/.river_creek_theme \
+            && restart-creek
+        cp $HOME/themes/river/$chosen_theme/terminal_prompt_theme $HOME/.terminal_prompt_theme
+        wp $HOME/themes/river/$chosen_theme/wallpaper.*
+
+        if { which qutebrowser || type qutebrowser; } &>/dev/null
+        then
+            cp $HOME/themes/river/$chosen_theme/qutebrowser_config.py \
+                ~/.config/qutebrowser/config.py
+            qutebrowser :config-source
+        fi
+
+        clear
+        newgrp
+    fi
+}
