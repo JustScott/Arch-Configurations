@@ -78,18 +78,21 @@ if which bemenu &>/dev/null; then
 fi
 
 if [[ -n "$WAYLAND_DISPLAY" ]]; then
-    alias 1monitor="wlr-randr --output eDP-1 --on --pos 0,0 --output DP-10 --off --output DP-9 --off"
-    alias 2monitors="wlr-randr --output eDP-1 --off --output DP-10 --on --pos 2256,0 --output DP-9 --on --pos 4176,0"
-    alias 3monitors="wlr-randr --output eDP-1 --on --pos 0,0 --output DP-10 --on --pos 2256,0 --output DP-9 --on --pos 4176,0"
-    
-    if uname -r | grep "pinetab2" &>/dev/null
+    if which wlr-randr &>/dev/null
     then
-        if wlr-randr | grep "HDMI-A-1" &>/dev/null; then
-            alias 1monitor="wlr-randr --output DSI-1 --off --output HDMI-A-1 --on --pos 0,0"
-            alias 2monitors="wlr-randr --output DSI-1 --on --transform 270 --pos 0,1280 --output HDMI-A-1 --on --pos 0,0"
-            alias 2monitors_other="wlr-randr --output DSI-1 --on --transform 270 --pos 0,1075 --output HDMI-A-1 --on --pos 1280,0"
+        alias 1monitor="wlr-randr --output eDP-1 --on --pos 0,0 --output DP-10 --off --output DP-9 --off"
+        alias 2monitors="wlr-randr --output eDP-1 --off --output DP-10 --on --pos 2256,0 --output DP-9 --on --pos 4176,0"
+        alias 3monitors="wlr-randr --output eDP-1 --on --pos 0,0 --output DP-10 --on --pos 2256,0 --output DP-9 --on --pos 4176,0"
+        
+        if uname -r | grep "pinetab2" &>/dev/null
+        then
+            if wlr-randr | grep "HDMI-A-1" &>/dev/null; then
+                alias 1monitor="wlr-randr --output DSI-1 --off --output HDMI-A-1 --on --pos 0,0"
+                alias 2monitors="wlr-randr --output DSI-1 --on --transform 270 --pos 0,1280 --output HDMI-A-1 --on --pos 0,0"
+                alias 2monitors_other="wlr-randr --output DSI-1 --on --transform 270 --pos 0,1075 --output HDMI-A-1 --on --pos 1280,0"
         fi
     fi
+fi
 
 elif which dwm &>/dev/null; then
     main_monitor="eDP-1"
