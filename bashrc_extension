@@ -644,3 +644,15 @@ theme() {
         newgrp
     fi
 }
+
+change_pkg_version() {
+    sudo -v
+
+    package_name="$(ls /var/cache/pacman/pkg/ | grep -v "zst.sig" | fzf -i)"
+
+    if [[ -n $package_name ]]
+    then
+        sudo pacman -U /var/cache/pacman/pkg/$package_name
+    fi
+
+}
