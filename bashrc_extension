@@ -77,10 +77,12 @@ if which bemenu &>/dev/null; then
     alias bemenu="bemenu --fn 'monospace [14]' -w"
 fi
 
+
 if [[ -n "$WAYLAND_DISPLAY" ]]; then
     if which wlr-randr &>/dev/null
     then
-        alias 1monitor="wlr-randr --output eDP-1 --on --pos 0,0 --output DP-10 --off --output DP-9 --off"
+        alias laptop_display=disconnect-external-displays
+        alias office_monitor=external_display_only
         alias 2monitors="wlr-randr --output eDP-1 --off --output DP-10 --on --pos 2256,0 --output DP-9 --on --pos 4176,0"
         alias 3monitors="wlr-randr --output eDP-1 --on --pos 0,0 --output DP-10 --on --pos 2256,0 --output DP-9 --on --pos 4176,0"
         
@@ -107,6 +109,8 @@ elif which dwm &>/dev/null; then
     alias 2home_monitors="set-monitors $main_monitor $home_monitor"
     alias 1home_monitor="set-monitors $home_monitor; xrandr --output $main_monitor --off"
 fi
+
+
 
 # pacman/yay + fzf
 if which pacman &>/dev/null; then
@@ -654,5 +658,46 @@ change_pkg_version() {
     then
         sudo pacman -U /var/cache/pacman/pkg/$package_name
     fi
+}
 
+# Turn off laptop display and turn on external display
+external_display_only() {
+    if [[ -n "$WAYLAND_LAPTOP_DISPLAY_NAME" ]]
+    then
+        display_names=($(wlr-randr | grep -v "^[[:space:]]" | awk '{print $1}'))
+
+        if [[ "${#display_names[@]}" -gt 2 ]]
+        then
+            echo "Too many displays connected"
+            return 1
+        fi
+
+        if echo "${display_names[@]}" | grep "$WAYLAND_LAPTOP_DISPLAY_NAME" &>/dev/null
+        then
+            echo "Turn off all displays"
+            for display in ${display_names[@]}
+            do
+                wlr-randr --output $display --off
+            done
+            for display in ${display_names[@]}
+            do
+                if [[ "$display" != "$WAYLAND_LAPTOP_DISPLAY_NAME" ]]
+                then
+                    echo "Turn on external display: $display"
+                    wlr-randr \
+                        --output "$WAYLAND_LAPTOP_DISPLAY_NAME" --off \
+                        --output $display --on --pos 0,0 &>/dev/null
+                    if { which creek || type creek; } &>/dev/null
+                    then
+                        echo "Restart creek"
+                        restart-creek &>/dev/null
+                    fi
+                    return 0
+                fi
+            done
+        fi
+    else
+        echo "\$WAYLAND_LAPTOP_DISPLAY_NAME variable not set"
+        return 1
+    fi
 }
