@@ -1,5 +1,5 @@
 auto-reload yes
-browser min_browser
+browser qutebrowser
 reload-threads 10
 
 color listnormal        cyan default
