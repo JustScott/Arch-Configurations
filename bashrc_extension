@@ -27,8 +27,8 @@
         #stty rows 46 cols 171 &>/dev/null # dwm with st
     #}
 
-    alias external_tty="stty rows 32 cols 135 &>/dev/null"    
-    alias primary_tty="stty rows 46 cols 159 &>/dev/null"    
+    alias samsung_tty="stty rows 33 cols 120 &>/dev/null"
+    alias laptop_tty="stty rows 47 cols 141 &>/dev/null"
     #stty rows 46 cols 159 &>/dev/null # river with foot
 
     # enable color
@@ -256,6 +256,7 @@ j() {
     $EDITOR $months_directory/$(date +"%d").md
 }
 
+# TODO: Place blogs in future website github directory
 blog() {
     blog_directory=$HOME/notes/Writing/Blog
     mkdir -p $blog_directory 2>/dev/null
@@ -700,4 +701,44 @@ external_display_only() {
         echo "\$WAYLAND_LAPTOP_DISPLAY_NAME variable not set"
         return 1
     fi
+}
+
+update_arch_iso() {
+    PREVIOUS_DIRECTORY=$PWD
+    ISO_DIRECTORY="$HOME/Documents/ISOs"
+    ISO_URL="https://mirror.arizona.edu/archlinux/iso/latest/archlinux-x86_64.iso"
+    ISO_FILENAME="archlinux-x86_64.iso"
+    ISO_SHA_URL="https://mirror.umd.edu/archlinux/iso/latest/sha256sums.txt"
+    ISO_SHA_FILENAME="arch_iso_sha256sums.txt"
+
+    mkdir -p "$ISO_DIRECTORY" &>/dev/null
+    cd "$ISO_DIRECTORY"
+
+    printf "\n\e[36mDownloading the latest sha256sum file...\e[0m"
+    if ! curl -L "$ISO_SHA_URL" -o $ISO_SHA_FILENAME &>/dev/null
+    then
+        cd $PREVIOUS_DIRECTORY
+        return 1
+    fi
+    printf "\r\e[32mSuccessfully downloaded the latest sha256sum file.\n\e[0m"
+
+    if [[ -f "$ISO_FILENAME" ]] && sha256sum --ignore-missing -c "$ISO_SHA_FILENAME" &>/dev/null
+    then
+        printf "\n\e[36mArch ISO is up-to-date\n\e[0m"
+    else
+        printf "\n\e[36mDownloading the latest ISO...\n\e[0m"
+        if curl -L "$ISO_URL" -o $ISO_FILENAME
+        then
+            if sha256sum --ignore-missing -c $ISO_SHA_FILENAME
+            then
+                printf "\e[32mISO Downloaded and verified!\n\e[0m"
+            else
+                printf "\e[31m[!] Failed to verify ISO, may have failed to download entirely.\n\e[0m"
+                cd $PREVIOUS_DIRECTORY
+                return 1
+            fi
+        fi
+    fi
+
+    cd $PREVIOUS_DIRECTORY
 }
