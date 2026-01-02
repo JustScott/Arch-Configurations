@@ -742,3 +742,25 @@ update_arch_iso() {
 
     cd $PREVIOUS_DIRECTORY
 }
+
+help_cli() {
+    CLI_FILE_PATH="$HOME/notes/Resources/Linux/cli.md"
+
+    if [[ -f "$CLI_FILE_PATH" ]]
+    then
+        bat "$CLI_FILE_PATH"
+    else
+        printf "\e[31m%s\e[0m" "File '$CLI_FILE_PATH' doesn't exist"
+    fi
+}
+
+edit_help_cli() {
+    CLI_FILE_PATH="$HOME/notes/Resources/Linux/cli.md"
+
+    if [[ -f "$CLI_FILE_PATH" ]]
+    then
+        $EDITOR "$CLI_FILE_PATH"
+    else
+        printf "\e[31m%s\e[0m" "File '$CLI_FILE_PATH' doesn't exist"
+    fi
+}
