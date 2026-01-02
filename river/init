@@ -38,11 +38,11 @@ if which creek &>/dev/null; then
     # Initialize status-bar values 
     update-status-bar --all &
 
-    # Update just the date every second
+    # Update the date and network every second
     while true;    
     do    
         sleep 1
-        update-status-bar
+        update-status-bar --network
     done &
 
     while true;    
@@ -55,7 +55,7 @@ if which creek &>/dev/null; then
     while true;    
     do    
         sleep 15
-        update-status-bar --volume --brightness --battery --network --bluetooth
+        update-status-bar --volume --brightness --battery --bluetooth
     done &
 
     while true;
