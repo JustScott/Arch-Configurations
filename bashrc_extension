@@ -335,51 +335,6 @@ wpf() {
     fi
 }
 
-mplay() {
-    lf $HOME/Music
-}
-
-mdownload() {
-    invidious_instance="https://invidious.materialio.us"
-
-    if ! curl ip.me &>/dev/null
-    then
-        echo "[ERROR] No connection to internet"
-        return 1
-    fi
-
-    search="$@"
-    if [[ ${#@} == 0 && -f $HOME/.play_history ]]
-    then
-        if ! { which fzf || type fzf; } &>/dev/null
-        then
-            echo "[ERROR] You need to pass a search term after play"
-            return 1
-#        else
-#            search="$(cat $HOME/.play_history | fzf --reverse)"
-        fi
-    fi
-
-    if { which ytfzf || type ytfzf; } &>/dev/null
-    then
-        mkdir -p $HOME/Music
-        cd $HOME/Music
-        if [[ -n "$search" ]]
-        then
-            # Avoid repeats
-            if ! grep "$search" $HOME/.play_history &>/dev/null 
-            then
-                echo "$search" >> $HOME/.play_history
-            fi
-
-#            invidious_instance=$invidious_instance ytfzf --download --audio-only --random-select --loop "$search"
-            invidious_instance=$invidious_instance ytfzf --download --audio-only "$search"
-        fi
-    else
-        echo -e "\n - [ERROR] ytfzf not installed - \n"
-    fi
-}
-
 presnap() {
     description="$1"
     configs=($(sudo snapper list-configs | awk 'NR>2 {print $1}'))
