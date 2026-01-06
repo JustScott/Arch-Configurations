@@ -703,14 +703,15 @@ help_cli() {
 }
 
 edit_help_cli() {
-    FILE_PATH="$HOME/notes/Resources/Linux/cli.md"
+    DIRECTORY="$HOME/notes/Resources/Linux"
+    FILE_PATH="$DIRECTORY/cli.md"
 
-    if [[ -f "$FILE_PATH" ]]
+    if ! [[ -d "$DIRECTORY" ]]
     then
-        $EDITOR "$FILE_PATH"
-    else
-        printf "\e[31m%s\e[0m" "File '$FILE_PATH' doesn't exist"
+        mkdir -p "$DIRECTORY" &>/dev/null
     fi
+
+    $EDITOR "$FILE_PATH"
 }
 
 help_bash() {
@@ -725,12 +726,13 @@ help_bash() {
 }
 
 edit_help_bash() {
-    FILE_PATH="$HOME/notes/Resources/Linux/bash.md"
+    DIRECTORY="$HOME/notes/Resources/Linux"
+    FILE_PATH="$DIRECTORY/bash.md"
 
-    if [[ -f "$FILE_PATH" ]]
+    if ! [[ -d "$DIRECTORY" ]]
     then
-        $EDITOR "$FILE_PATH"
-    else
-        printf "\e[31m%s\e[0m" "File '$FILE_PATH' doesn't exist"
+        mkdir -p "$DIRECTORY" &>/dev/null
     fi
+
+    $EDITOR "$FILE_PATH"
 }
