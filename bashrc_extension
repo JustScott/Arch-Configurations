@@ -744,23 +744,45 @@ update_arch_iso() {
 }
 
 help_cli() {
-    CLI_FILE_PATH="$HOME/notes/Resources/Linux/cli.md"
+    FILE_PATH="$HOME/notes/Resources/Linux/cli.md"
 
-    if [[ -f "$CLI_FILE_PATH" ]]
+    if [[ -f "$FILE_PATH" ]]
     then
-        bat "$CLI_FILE_PATH"
+        bat "$FILE_PATH"
     else
-        printf "\e[31m%s\e[0m" "File '$CLI_FILE_PATH' doesn't exist"
+        printf "\e[31m%s\e[0m" "File '$FILE_PATH' doesn't exist"
     fi
 }
 
 edit_help_cli() {
-    CLI_FILE_PATH="$HOME/notes/Resources/Linux/cli.md"
+    FILE_PATH="$HOME/notes/Resources/Linux/cli.md"
 
-    if [[ -f "$CLI_FILE_PATH" ]]
+    if [[ -f "$FILE_PATH" ]]
     then
-        $EDITOR "$CLI_FILE_PATH"
+        $EDITOR "$FILE_PATH"
     else
-        printf "\e[31m%s\e[0m" "File '$CLI_FILE_PATH' doesn't exist"
+        printf "\e[31m%s\e[0m" "File '$FILE_PATH' doesn't exist"
+    fi
+}
+
+help_bash() {
+    FILE_PATH="$HOME/notes/Resources/Linux/bash.md"
+
+    if [[ -f "$FILE_PATH" ]]
+    then
+        bat "$FILE_PATH"
+    else
+        printf "\e[31m%s\e[0m" "File '$FILE_PATH' doesn't exist"
+    fi
+}
+
+edit_help_bash() {
+    FILE_PATH="$HOME/notes/Resources/Linux/bash.md"
+
+    if [[ -f "$FILE_PATH" ]]
+    then
+        $EDITOR "$FILE_PATH"
+    else
+        printf "\e[31m%s\e[0m" "File '$FILE_PATH' doesn't exist"
     fi
 }
