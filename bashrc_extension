@@ -259,6 +259,29 @@ blog() {
     }
 }
 
+plan() {
+    DIRECTORY="$HOME/notes"
+    FILE_PATH="$DIRECTORY/plan.md"
+
+    if ! [[ -d "$DIRECTORY" ]]
+    then
+        mkdir -p "$DIRECTORY" &>/dev/null
+    fi
+
+    $EDITOR "$FILE_PATH"
+}
+
+view_plan() {
+    FILE_PATH="$HOME/notes/plan.md"
+
+    if [[ -f "$FILE_PATH" ]]
+    then
+        bat "$FILE_PATH"
+    else
+        printf "\e[31m%s\e[0m" "File '$FILE_PATH' doesn't exist"
+    fi
+}
+
 # sets wallpaper
 wp() {
     new_wallpaper_file_path="$1"
@@ -699,3 +722,4 @@ edit_help_rust() {
 
     $EDITOR "$FILE_PATH"
 }
+
