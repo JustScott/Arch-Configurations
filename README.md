@@ -1,3 +1,6 @@
+# This project has been replaced by Arch-Setup
+It will no longer be updated.
+
 # Arch-Configurations
 All of my Arch Linux configuration files.
 
